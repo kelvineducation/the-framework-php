@@ -45,3 +45,47 @@ function json(ResponseWriterInterface $w, $data, int $status = null, $encoding =
     }
     return $w;
 }
+
+/**
+ * @param ResponseWriterInterface $w
+ * @param string $view_path
+ * @param string $layout
+ * @param array $vars
+ * @param int|null $status
+ */
+function html(
+    ResponseWriterInterface $w,
+    string $view_path,
+    string $layout = '',
+    array $vars = [],
+    int $status = null
+) {
+    if ($status !== null) {
+        $w->withStatus($status);
+    }
+    $w->withHeader('Content-Type', 'text/html; charset=utf-8');
+    render($w, $view_path, $layout, $vars);
+}
+
+function render(
+    WriterInterface $w,
+    string $view_path,
+    string $layout = '',
+    array $vars = []
+) {
+    if ($layout !== '') {
+        $stream = new Stream();
+        render($stream, $view_path, '', $vars);
+        return render($w, $layout, '', [
+            'content' => $stream->output()
+        ]);
+    }
+
+    ob_start(function ($data) use ($w) {
+        $w->write($data);
+        return "";
+    });
+    extract($vars);
+    include $view_path;
+    ob_end_clean();
+}

@@ -10,7 +10,7 @@ class Response implements ResponseWriterInterface
     private $headers = [];
 
     /**
-     * @var resource
+     * @var Stream
      */
     private $body_stream;
 
@@ -43,14 +43,11 @@ class Response implements ResponseWriterInterface
     /**
      * @param string $data
      * @return int Number of bytes written
+     * @throws \RuntimeException
      */
     public function write(string $data): int
     {
-        $bytes = fwrite($this->bodyStream(), $data);
-        if ($bytes === false) {
-            throw new \RuntimeException("Could not write to stream");
-        }
-        return $bytes;
+        return $this->getBodyStream()->write($data);
     }
 
     /**
@@ -74,26 +71,18 @@ class Response implements ResponseWriterInterface
             call_user_func($output_methods['header'], sprintf("%s: %s", $name, $value));
         }
 
-        rewind($this->bodyStream());
-        while (!feof($this->bodyStream())) {
-            call_user_func($output_methods['body'], fread($this->bodyStream(), 1024));
-        }
-        fclose($this->bodyStream());
+        call_user_func($this->getBodyStream()->output($output_methods['body']));
     }
 
     /**
-     * @return resource
+     * @return Stream
      */
-    private function bodyStream()
+    private function getBodyStream()
     {
         if ($this->body_stream) {
             return $this->body_stream;
         }
-        $this->body_stream = fopen('php://temp', 'r+');
-        if ($this->body_stream === false) {
-            throw new \RuntimeException("Could not open php://temp");
-        }
-
+        $this->body_stream = new Stream();
         return $this->body_stream;
     }
 }
