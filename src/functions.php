@@ -67,6 +67,12 @@ function html(
     render($w, $view_path, $layout, $vars);
 }
 
+/**
+ * @param WriterInterface $w
+ * @param string $view_path
+ * @param string $layout
+ * @param array $vars
+ */
 function render(
     WriterInterface $w,
     string $view_path,
@@ -76,9 +82,10 @@ function render(
     if ($layout !== '') {
         $stream = new Stream();
         render($stream, $view_path, '', $vars);
-        return render($w, $layout, '', [
+        render($w, $layout, '', [
             'content' => $stream->output()
         ]);
+        return;
     }
 
     ob_start(function ($data) use ($w) {

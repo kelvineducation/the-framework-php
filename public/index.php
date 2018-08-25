@@ -12,6 +12,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/login', 'login');
+    $r->addRoute('GET', '/login/auth', 'login_auth');
 });
 
 // Fetch method and URI from somewhere
@@ -37,8 +38,12 @@ switch ($routeInfo[0]) {
         $handler = $routeInfo[1];
         $vars = $routeInfo[2];
         $response = new \K\Response();
+        $request = new \K\Request();
         if ($handler === 'login') {
             (new \K\LoginPage())($response);
+        } else if ($handler === 'login_auth') {
+            $auth = new \K\GoogleAuth();
+            (new \K\LoginAuthPage($auth))($response, $request);
         }
         $response->output();
         break;

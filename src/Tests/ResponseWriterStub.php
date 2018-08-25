@@ -20,4 +20,8 @@ class ResponseWriterStub implements ResponseWriterInterface
         $this->data .= $data;
         return strlen($data);
     }
+    public function setSessionParam(string $key, string $value)
+    {
+        echo "S:{$key}:{$value}\n";
+    }
 }

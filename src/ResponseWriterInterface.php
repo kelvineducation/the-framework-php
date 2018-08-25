@@ -14,4 +14,11 @@ interface ResponseWriterInterface extends WriterInterface
      * @param string $value
      */
     public function withHeader(string $name, string $value);
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
+    public function setSessionParam(string $key, string $value);
 }

@@ -17,7 +17,7 @@ class Response implements ResponseWriterInterface
     /**
      * @var int
      */
-    private $status_code;
+    private $status_code = 200;
 
     /**
      * @param int $code
@@ -84,5 +84,18 @@ class Response implements ResponseWriterInterface
         }
         $this->body_stream = new Stream();
         return $this->body_stream;
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
+    public function setSessionParam(string $key, string $value)
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $_SESSION[$key] = $value;
     }
 }
