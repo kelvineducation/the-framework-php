@@ -20,6 +20,11 @@ class Response implements ResponseWriterInterface
     private $status_code = 200;
 
     /**
+     * @var array
+     */
+    private $session = [];
+
+    /**
      * @param int $code
      * @return Response
      */
@@ -51,6 +56,16 @@ class Response implements ResponseWriterInterface
     }
 
     /**
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
+    public function setSessionParam(string $key, string $value)
+    {
+        $this->session[$key] = $value;
+    }
+
+    /**
      * @param array $output_methods
      */
     public function output(array $output_methods = [])
@@ -67,6 +82,16 @@ class Response implements ResponseWriterInterface
             }
         ], $output_methods);
         call_user_func($output_methods['code'], $this->status_code);
+
+        // Session headers
+        if (!empty($this->session)) {
+            session_start();
+            foreach ($this->session as $key => $value) {
+                $_SESSION[$key] = $value;
+            }
+            session_write_close();
+        }
+
         foreach ($this->headers as $name => $value) {
             call_user_func($output_methods['header'], sprintf("%s: %s", $name, $value));
         }
@@ -84,18 +109,5 @@ class Response implements ResponseWriterInterface
         }
         $this->body_stream = new Stream();
         return $this->body_stream;
-    }
-
-    /**
-     * @param string $key
-     * @param string $value
-     * @return void
-     */
-    public function setSessionParam(string $key, string $value)
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        $_SESSION[$key] = $value;
     }
 }

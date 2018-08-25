@@ -22,7 +22,7 @@ class Request implements RequestInterface
     public function getSessionParam(string $key, string $default = null)
     {
         if (session_status() == PHP_SESSION_NONE) {
-            session_start();
+            session_start(['read_and_close' => true]);
         }
         return $_SESSION[$key] ?? $default;
     }
