@@ -28,6 +28,17 @@ function route(string $pattern, array &$matches = null)
 
 /**
  * @param ResponseWriterInterface $w
+ * @param string $url
+ * @param int|null $status
+ */
+function redirect(ResponseWriterInterface $w, string $url, int $status = null)
+{
+    $w->withStatus($status ?: 302);
+    $w->withHeader('Location', $url);
+}
+
+/**
+ * @param ResponseWriterInterface $w
  * @param mixed $data
  * @param int|null $status
  * @param int $encoding

@@ -6,7 +6,8 @@ use K\ResponseWriterInterface;
 
 class ResponseWriterStub implements ResponseWriterInterface
 {
-    public $data;
+    public $data = '';
+    public $session;
     public function withStatus(int $code)
     {
         echo "{$code}\n";
@@ -22,6 +23,6 @@ class ResponseWriterStub implements ResponseWriterInterface
     }
     public function setSessionParam(string $key, string $value)
     {
-        echo "S:{$key}:{$value}\n";
+        $this->session[$key] = $value;
     }
 }
