@@ -79,6 +79,15 @@ function html(
 }
 
 /**
+ * @param string $filename
+ * @return string
+ */
+function viewPath(string $filename)
+{
+    return __DIR__ . '/../views/' . $filename;
+}
+
+/**
  * @param WriterInterface $w
  * @param string $view_path
  * @param string $layout
