@@ -7,14 +7,16 @@ use K\ResponseWriterInterface;
 class ResponseWriterStub implements ResponseWriterInterface
 {
     public $data = '';
+    public $status;
     public $session;
+    public $headers = [];
     public function withStatus(int $code)
     {
-        echo "{$code}\n";
+        $this->status = $code;
     }
     public function withHeader(string $name, string $value)
     {
-        echo "{$name}: {$value}\n";
+        $this->headers[$name] = $value;
     }
     public function write(string $data): int
     {

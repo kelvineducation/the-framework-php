@@ -3,30 +3,6 @@
 namespace K;
 
 /**
- * Checks if the request uri matches a route regex pattern
- * Example: if (route('#/user/(\d+)#, $matches))
- * This strips trailing slashes
- *
- * @param string $pattern
- * @param array|null $matches
- * @return bool
- */
-function route(string $pattern, array &$matches = null)
-{
-    $req_uri = $_SERVER['REQUEST_URI'];
-    if (strpos($req_uri, '?') !== false) {
-        $req_uri = substr($req_uri, 0, strpos($req_uri, '?'));
-    }
-    $req_uri = rtrim($req_uri, '/') ?: '/';
-
-    if (preg_match($pattern, $req_uri, $matches)) {
-        return true;
-    }
-
-    return false;
-}
-
-/**
  * @param ResponseWriterInterface $w
  * @param string $url
  * @param int|null $status
