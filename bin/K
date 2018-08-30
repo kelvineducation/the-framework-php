@@ -1,0 +1,68 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use K\Migration;
+
+$script = array_shift($argv);
+$cmd = array_shift($argv);
+
+/**
+ * Migrations
+ */
+if ($cmd === 'migrate:setup') {
+    $result = Migration::createMigrationsTable();
+    if ($result) {
+        echo "Created migrations table\n";
+    } else {
+        echo "Failed\n";
+        exit(1);
+    }
+    exit(0);
+}
+
+if ($cmd === 'migrate:new') {
+    $name = array_shift($argv);
+    $filename = Migration::create($name);
+    if ($filename === '') {
+        echo "Could not write new migration\n";
+        exit(1);
+    } else {
+        echo "{$filename} created in migrations/\n";
+    }
+    exit(0);
+}
+
+if ($cmd === 'migrate:rollback') {
+    Migration::rollback(
+        function ($mig_id) {
+            echo "* Rolling back {$mig_id}...";
+        },
+        function () {
+            echo "Done\n";
+        }
+    );
+    exit(0);
+}
+
+if ($cmd === 'migrate') {
+    Migration::runAll(
+        function ($mig_id) {
+            echo "* Running {$mig_id}...";
+        },
+        function ($mig_id, $skipped) {
+            if ($skipped) {
+                echo "* Skipping {$mig_id}\n";
+            } else {
+                echo "Done\n";
+            }
+        }
+    );
+    exit(0);
+}
+
+echo <<<HELP
+bin/K {{then read the source}}
+HELP;
+exit(1);

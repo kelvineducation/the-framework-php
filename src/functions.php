@@ -92,3 +92,16 @@ function render(
     include $view_path;
     ob_end_clean();
 }
+
+/**
+ * @return Db
+ */
+function db()
+{
+    static $db;
+    if ($db) {
+        return $db;
+    }
+    $db = new Db(getenv('DB_URL'));
+    return $db;
+}

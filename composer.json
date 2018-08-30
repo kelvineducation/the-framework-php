@@ -10,6 +10,7 @@
     ],
     "require": {
         "ext-json": "*",
+        "ext-pgsql": "*",
         "nikic/fast-route": "^1.3",
         "league/oauth2-google": "^2.2"
     },
