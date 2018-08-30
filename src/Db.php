@@ -2,18 +2,35 @@
 
 namespace K;
 
+/**
+ * @package K
+ */
 class Db
 {
+    /**
+     * @var resource
+     */
     private $conn;
 
     /**
-     * @param $url string postgres://user:pass@localhost:5432/dbname?param=val
+     * @var string
+     */
+    private $url;
+
+    /**
+     * @param string $url postgres://user:pass@localhost:5432/dbname?param=val
      */
     public function __construct(string $url)
     {
         $this->url = $url;
     }
 
+    /**
+     * @param string $sql
+     * @param array $params
+     * @return DbResult
+     * @throws DbException
+     */
     public function query(string $sql, array $params = []): DbResult
     {
         if (empty($params)) {
@@ -33,6 +50,12 @@ class Db
         return $result;
     }
 
+    /**
+     * @param string $sql
+     * @param array $params
+     * @return bool
+     * @throws DbException
+     */
     public function exists(string $sql, array $params = []): bool
     {
         $num_rows = $this->query($sql, $params)->getNumRows();
@@ -40,6 +63,12 @@ class Db
         return $num_rows !== 0;
     }
 
+    /**
+     * @param string $sql
+     * @param array $params
+     * @return array
+     * @throws DbException
+     */
     public function fetchRow(string $sql, array $params = []): array
     {
         $row = $this->query($sql, $params)->fetchRow();
@@ -47,6 +76,12 @@ class Db
         return $row;
     }
 
+    /**
+     * @param string $sql
+     * @param array $params
+     * @return null|string
+     * @throws DbException
+     */
     public function fetchOne(string $sql, array $params = []): ?string
     {
         $val = $this->query($sql, $params)->fetchOne();
@@ -54,6 +89,12 @@ class Db
         return $val;
     }
 
+    /**
+     * @param string $table
+     * @param array $data
+     * @return array
+     * @throws DbException
+     */
     public function insert(string $table, array $data = []): array
     {
         $cols = array_keys($data);
@@ -63,7 +104,7 @@ class Db
         $params = [];
         $n = 1;
         foreach ($data as $val) {
-            $vals[] = $this->quote($val, function($val) use (&$n, &$params) {
+            $vals[] = $this->quote($val, function ($val) use (&$n, &$params) {
                 $params[] = $val;
                 return '$' . $n++;
             });
@@ -79,6 +120,12 @@ SQL;
         return $row;
     }
 
+    /**
+     * @param $table
+     * @param string $where
+     * @param array $params
+     * @throws DbException
+     */
     public function delete($table, string $where, array $params = [])
     {
         if (empty(trim($where))) {
@@ -95,6 +142,14 @@ SQL;
         $this->query($sql, $params);
     }
 
+    /**
+     * @param $table
+     * @param array $data
+     * @param string $where
+     * @param array $params
+     * @return array
+     * @throws DbException
+     */
     public function update($table, array $data, string $where, array $params = []): array
     {
         if (empty(trim($where))) {
@@ -112,7 +167,7 @@ SQL;
         $cols = [];
         $n = count($params) + 1;
         foreach ($data as $field => $val) {
-            $val = $this->quote($val, function($val) use (&$n, &$params) {
+            $val = $this->quote($val, function ($val) use (&$n, &$params) {
                 $params[] = $val;
                 return '$' . $n++;
             });
@@ -124,6 +179,11 @@ SQL;
         return $row;
     }
 
+    /**
+     * @param $val
+     * @param callable|null $quote_func
+     * @return string
+     */
     public function quote($val, callable $quote_func = null): string
     {
         if (is_null($val)) {
@@ -152,7 +212,7 @@ SQL;
         }
 
         if (!$quote_func) {
-            $quote_func = function($val) {
+            $quote_func = function ($val) {
                 return pg_escape_literal($this->getConn(), $val);
             };
         }
@@ -161,6 +221,11 @@ SQL;
         return $quoted_val;
     }
 
+    /**
+     * @param $col
+     * @return string
+     * @throws DbException
+     */
     public function quoteCol($col): string
     {
         $quoted_col = pg_escape_identifier($this->getConn(), $col);
@@ -168,6 +233,10 @@ SQL;
         return $quoted_col;
     }
 
+    /**
+     * @return resource
+     * @throws DbException
+     */
     public function getConn()
     {
         if ($this->conn) {
@@ -183,6 +252,10 @@ SQL;
         return $this->conn;
     }
 
+    /**
+     * @return string
+     * @throws DbException
+     */
     public function getLastError(): string
     {
         $last_err = pg_last_error($this->getConn());
@@ -194,6 +267,11 @@ SQL;
         return $last_err;
     }
 
+    /**
+     * @param string $url
+     * @param int $conn_timeout
+     * @return string
+     */
     private static function pgConnStr(string $url, int $conn_timeout = 2): string
     {
         $host = parse_url($url, PHP_URL_HOST);
@@ -204,7 +282,7 @@ SQL;
 
         // get additional options like application_name
         parse_str(parse_url($url, PHP_URL_QUERY), $options);
-        $options_str = implode(' ', array_map(function($arg, $val) {
+        $options_str = implode(' ', array_map(function ($arg, $val) {
             return "--{$arg}={$val}";
         }, array_keys($options), $options));
 
