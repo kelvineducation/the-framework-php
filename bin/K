@@ -3,10 +3,13 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use function K\db;
 use K\Migration;
 
 $script = array_shift($argv);
 $cmd = array_shift($argv);
+
+\K\load_env();
 
 /**
  * Migrations
@@ -47,6 +50,9 @@ if ($cmd === 'migrate:rollback') {
 }
 
 if ($cmd === 'migrate') {
+    \K\Model::setDb(function () {
+        return db();
+    });
     Migration::runAll(
         function ($mig_id) {
             echo "* Running {$mig_id}...";

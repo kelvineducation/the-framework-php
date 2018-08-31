@@ -58,7 +58,7 @@ function html(
  * @param string $filename
  * @return string
  */
-function viewPath(string $filename)
+function view_path(string $filename)
 {
     return __DIR__ . '/../views/' . $filename;
 }
@@ -104,4 +104,30 @@ function db()
     }
     $db = new Db(getenv('DB_URL'));
     return $db;
+}
+
+/**
+ * @param ResponseWriterInterface $w
+ * @param RequestInterface $request
+ * @param callable $next
+ */
+function require_login(ResponseWriterInterface $w, RequestInterface $request, callable $next)
+{
+    if ($request->getSessionParam('user_id')) {
+        $next($w, $request);
+        return;
+    }
+    redirect($w, '/login');
+}
+
+function load_env()
+{
+    $env_file = __DIR__ . '/../.env.php';
+    if (!file_exists($env_file)) {
+        return;
+    }
+    $env = include $env_file;
+    foreach ($env as $key => $value) {
+        putenv("{$key}={$value}");
+    }
 }

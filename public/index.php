@@ -13,6 +13,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/login', '\K\Pages\LoginPage');
     $r->addRoute('GET', '/login/auth', '\K\Pages\LoginAuthPage');
+    $r->addRoute('GET', '/logout', '\K\Pages\LogoutPage');
+
+    $r->addRoute('GET', '/organizations', '\K\Pages\OrganizationsPage');
 });
 
 // Fetch method and URI from somewhere

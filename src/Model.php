@@ -83,6 +83,7 @@ class Model
     /**
      * @param $id
      * @return Model|null
+     * @throws DbException
      */
     public static function find($id): ?Model
     {
@@ -105,8 +106,9 @@ SQL;
     /**
      * @param string $where
      * @param array $params
-     * @return Model|null
+     * @return static|null
      * @throws ModelException
+     * @throws DbException
      */
     public static function findWhere(string $where, array $params = []): ?Model
     {
