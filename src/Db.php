@@ -234,6 +234,23 @@ SQL;
     }
 
     /**
+     * @param array $values
+     * @param array $params
+     * @return array [$in_sql, $params]
+     */
+    public function quoteIn(array $values, array $params = []): array
+    {
+        $n = count($params);
+        $sql_fields = [];
+        foreach ($values as $value) {
+            $sql_fields[] = '$' . ++$n;
+            $params[] = $value;
+        }
+
+        return [implode(", ", $sql_fields), $params];
+    }
+
+    /**
      * @return resource
      * @throws DbException
      */
