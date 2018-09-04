@@ -110,14 +110,18 @@ function db()
  * @param ResponseWriterInterface $w
  * @param RequestInterface $request
  * @param callable $next
+ * @throws DbException
  */
 function require_login(ResponseWriterInterface $w, RequestInterface $request, callable $next)
 {
-    if ($request->getSessionParam('user_id')) {
-        $next($w, $request);
+    $user_id = $request->getSessionParam('user_id');
+    if (!$user_id) {
+        redirect($w, '/login');
         return;
     }
-    redirect($w, '/login');
+    $user = User::find($user_id);
+    $next($user, $w, $request);
+    return;
 }
 
 function load_env()
