@@ -82,7 +82,7 @@ class Model
 
     /**
      * @param $id
-     * @return Model|null
+     * @return static|null
      * @throws DbException
      */
     public static function find($id): ?Model

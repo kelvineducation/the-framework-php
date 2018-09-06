@@ -80,7 +80,7 @@ function render(
         render($stream, $view_path, '', $vars);
         render($w, $layout, '', [
             'content' => $stream->output()
-        ]);
+        ] + $vars);
         return;
     }
 
@@ -109,19 +109,35 @@ function db()
 /**
  * @param ResponseWriterInterface $w
  * @param RequestInterface $request
- * @param callable $next
+ * @return bool|User
  * @throws DbException
  */
-function require_login(ResponseWriterInterface $w, RequestInterface $request, callable $next)
+function require_login(ResponseWriterInterface $w, RequestInterface $request)
 {
     $user_id = $request->getSessionParam('user_id');
     if (!$user_id) {
         redirect($w, '/login');
-        return;
+        return false;
     }
     $user = User::find($user_id);
-    $next($user, $w, $request);
-    return;
+    return $user;
+}
+
+/**
+ * @param ResponseWriterInterface $w
+ * @param RequestInterface $request
+ * @return bool|Organization
+ * @throws DbException
+ */
+function require_organization(ResponseWriterInterface $w, RequestInterface $request)
+{
+    $organization_id = $request->getSessionParam('organization_id');
+    if (!$organization_id) {
+        redirect($w, '/organizations');
+        return false;
+    }
+    $organization = Organization::find($organization_id);
+    return $organization;
 }
 
 function load_env()
