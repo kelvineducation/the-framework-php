@@ -17,6 +17,8 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 
     $r->addRoute('GET', '/', '\K\Pages\TimelinePage');
     $r->addRoute('GET', '/organizations', '\K\Pages\OrganizationsPage');
+
+    $r->addRoute('GET', '/questions', '\K\Pages\QuestionsPage');
 });
 
 // Fetch method and URI from somewhere
