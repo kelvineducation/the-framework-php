@@ -19,6 +19,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('GET', '/organizations', '\K\Pages\OrganizationsPage');
 
     $r->addRoute('GET', '/questions', '\K\Pages\QuestionsPage');
+    $r->addRoute('GET', '/questions/list', '\K\Pages\QuestionListPage');
 });
 
 // Fetch method and URI from somewhere
@@ -49,4 +50,4 @@ if ($route_info[0] == FastRoute\Dispatcher::METHOD_NOT_ALLOWED) {
 $page_class = $route_info[1];
 $vars = $route_info[2];
 $request = new \K\Request();
-call_user_func([$page_class, 'handle'], $request, $vars);
+call_user_func([$page_class, 'handleRequest'], $request, $vars);
