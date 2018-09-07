@@ -257,7 +257,7 @@ SQL;
         // this is magical, but I think it might be better than
         // adding it to every Model
         $this->setData([
-            'updated_at' => new DbExpr('now()'),
+            'updated_at' => new DbExpr('CURRENT_TIMESTAMP'),
         ]);
         $changed_data = array_intersect_key($this->data, $this->changed);
         $row = $this->db()->update(
