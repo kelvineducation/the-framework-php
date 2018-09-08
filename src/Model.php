@@ -70,7 +70,7 @@ class Model
 
     /**
      * @param array $data
-     * @return Model
+     * @return static
      */
     public static function create(array $data)
     {

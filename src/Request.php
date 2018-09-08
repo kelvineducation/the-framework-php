@@ -11,7 +11,13 @@ class Request implements RequestInterface
      */
     public function getParam(string $key, string $default = null)
     {
-        return $_GET[$key] ?? $default;
+        if (isset($_POST[$key])) {
+            return $_POST[$key];
+        }
+        if (isset($_GET[$key])) {
+            return $_GET[$key];
+        }
+        return $default;
     }
 
     /**
