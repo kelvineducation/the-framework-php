@@ -92,10 +92,11 @@ class Db
     /**
      * @param string $table
      * @param array $data
+     * @param string $returning
      * @return array
      * @throws DbException
      */
-    public function insert(string $table, array $data = []): array
+    public function insert(string $table, array $data = [], string $returning = '*'): array
     {
         $cols = array_keys($data);
         $cols_sql = implode(', ', array_map([$this, 'quoteCol'], $cols));
@@ -110,11 +111,11 @@ class Db
             });
         }
 
-        $sql = <<<SQL
-INSERT INTO %s (%s) VALUES (%s)
-    RETURNING *;
-SQL;
-        $sql = sprintf($sql, $table, $cols_sql, implode(", ", $vals));
+        $sql = "INSERT INTO %s (%s) VALUES (%s)";
+        if ($returning !== '') {
+            $sql .= "RETURNING %s";
+        }
+        $sql = sprintf($sql, $table, $cols_sql, implode(", ", $vals), $returning);
         $row = $this->fetchRow($sql, $params);
 
         return $row;
