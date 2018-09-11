@@ -18,7 +18,7 @@ class Migration
     public static function createMigrationsTable(): bool
     {
         $sql = <<<SQL
-CREATE TABLE migrations (
+CREATE TABLE IF NOT EXISTS migrations (
     migration_id varchar PRIMARY KEY,
     migrated_at timestamp with time zone DEFAULT now() NOT NULL,
     batch integer NOT NULL
