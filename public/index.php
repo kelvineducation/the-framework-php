@@ -23,6 +23,8 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 
     $r->addRoute('GET', '/pulses', '\K\Pages\PulsesPage');
     $r->addRoute('POST', '/pulses/add', '\K\Pages\PulseAddPage');
+
+    $r->addRoute('GET', '/api/v1/pulse', '\K\Pages\ApiPulsePage');
 });
 
 // Fetch method and URI from somewhere
