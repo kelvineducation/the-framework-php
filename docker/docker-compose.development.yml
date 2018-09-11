@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+  postgres:
+    image: postgres:10.5-alpine
+    restart: always
+    ports:
+      - 5432
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=pulse
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data

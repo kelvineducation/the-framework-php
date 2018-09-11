@@ -1,0 +1,21 @@
+install: build-compose-file ${INSTALL_TARGET}
+
+install-docker:
+	docker-compose build
+	docker-compose up -d
+	docker-compose exec php-fpm composer install
+	docker-compose exec php-fpm ./bin/K migrate:setup
+	docker-compose exec php-fpm ./bin/K migrate
+
+install-buoy: install-dev-db install-dev
+
+install-dev: install-dev-config install-docker
+
+install-dev-db:
+
+install-dev-config:
+
+build-compose-file:
+	cp -a docker/docker-compose.*.yml .
+	docker-compose $(COMPOSE_FILES) config >docker-compose.yml
+	rm docker-compose.*.yml

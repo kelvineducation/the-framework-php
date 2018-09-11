@@ -1,4 +1,8 @@
 /vendor/
 /.idea/
+/Makefile
+/docker-compose.yml
+/data/postgres
+/.env
 .DS_Store
 .env.php
