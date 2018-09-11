@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+  nginx:
+    networks:
+      default:
+      buoy:
+        aliases:
+          - pulse
+
+networks:
+  buoy:
+    external:
+      name: buoy
