@@ -16,12 +16,14 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('GET', '/logout', '\K\Pages\LogoutPage');
 
     $r->addRoute('GET', '/', '\K\Pages\TimelinePage');
+    $r->addRoute('GET', '/explore', '\K\Pages\ReportSummaryPage');
     $r->addRoute('GET', '/organizations', '\K\Pages\OrganizationsPage');
 
     $r->addRoute('GET', '/questions', '\K\Pages\QuestionsPage');
     $r->addRoute('POST', '/questions/add', '\K\Pages\QuestionAddPage');
 
     $r->addRoute('GET', '/pulses', '\K\Pages\PulsesPage');
+    $r->addRoute('GET', '/pulses/remove', '\K\Pages\PulseRemovePage');
     $r->addRoute('POST', '/pulses/add', '\K\Pages\PulseAddPage');
 
     $r->addRoute('GET', '/api/v1/pulse', '\K\Pages\ApiPulsePage');
