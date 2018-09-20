@@ -98,12 +98,7 @@ function render(
  */
 function db()
 {
-    static $db;
-    if ($db) {
-        return $db;
-    }
-    $db = new Db(getenv('DB_URL'));
-    return $db;
+    return option('db');
 }
 
 /**
@@ -151,3 +146,59 @@ function load_env()
         putenv("{$key}={$value}");
     }
 }
+
+/**
+ * @param string $option
+ * @param mixed $value
+ */
+function option(string $option = null, ...$args)
+{
+    static $options = [];
+    static $frozen = [];
+
+    if ($option === null) {
+        return $options;
+    }
+
+    if (count($args)) {
+        if (isset($frozen[$option])) {
+            throw new Exception(sprintf("Cannot set option '%s' again", $option));
+        }
+        [$value] = $args;
+        $options[$option] = $value;
+        return $options[$option];
+    }
+
+    if ($options[$option] instanceof Factory) {
+        return call_user_func($options[$option]);
+    }
+
+    if (empty($frozen[$option]) && $options[$option] instanceof Service) {
+        $options[$option] = call_user_func($options[$option]);
+        $frozen[$option] = true;
+        return $options[$option];
+    }
+
+    return $options[$option];
+}
+
+function service(callable $fn) {
+    return new Service($fn);
+}
+function factory(callable $fn) {
+    return new Factory($fn);
+}
+
+class NamedCallable
+{
+    private $fn;
+    public function __construct(callable $fn) {
+        $this->fn = $fn;
+    }
+    public function __invoke() {
+        return call_user_func($this->fn);
+    }
+}
+
+class Service extends NamedCallable { }
+class Factory extends NamedCallable { } 

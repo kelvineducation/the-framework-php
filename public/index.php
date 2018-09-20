@@ -10,6 +10,10 @@ if (PHP_SAPI == 'cli-server') {
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+K\option('db', \K\service(function () {
+    return new \K\Db(getenv('DB_URL'));
+}));
+
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/login', '\K\Pages\LoginPage');
     $r->addRoute('GET', '/login/auth', '\K\Pages\LoginAuthPage');
