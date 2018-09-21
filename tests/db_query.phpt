@@ -6,7 +6,7 @@ db query() runs a query
 use function K\db;
 use K\DbException;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 $result = db()->query('SELECT 1');
 var_dump(get_class($result));

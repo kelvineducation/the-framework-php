@@ -15,7 +15,8 @@
         "league/oauth2-google": "^2.2"
     },
     "require-dev": {
-        "heroku/heroku-buildpack-php": "*"
+        "heroku/heroku-buildpack-php": "*",
+        "phpunit/phpunit": "^7.3"
     },
     "autoload": {
         "files": ["src/functions.php"],

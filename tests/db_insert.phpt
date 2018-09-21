@@ -5,7 +5,7 @@ db insert()
 
 use function K\db;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 db()->query("CREATE TEMPORARY TABLE t (id serial, a varchar, b int, c bool)");
 var_dump(db()->insert('t', [

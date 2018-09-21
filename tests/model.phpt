@@ -6,7 +6,7 @@ creating a new model
 use function K\db;
 use K\Model;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 Model::setDb(function() {
     return db();

@@ -6,7 +6,7 @@ db delete()
 use function K\db;
 use K\DbException;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 db()->query("CREATE TEMPORARY TABLE t (id serial, letter varchar)");
 db()->query("INSERT INTO t (letter) VALUES ('a'), ('a'), ('b'), ('c'), ('d')");

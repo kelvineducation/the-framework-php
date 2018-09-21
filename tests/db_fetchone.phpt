@@ -5,7 +5,7 @@ db fetchOne()
 
 use function K\db;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 var_dump(db()->fetchOne("SELECT 1"));
 

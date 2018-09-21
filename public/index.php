@@ -1,18 +1,6 @@
 <?php
 
-// Ignore static files for PHP built-in web server
-if (PHP_SAPI == 'cli-server') {
-    $file = __DIR__ . $_SERVER['REQUEST_URI'];
-    if (is_file($file)) {
-        return false;
-    }
-}
-
-require_once __DIR__ . '/../vendor/autoload.php';
-
-K\option('db', \K\service(function () {
-    return new \K\Db(getenv('DB_URL'));
-}));
+require_once __DIR__ . '/../bootstrap.php';
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/login', '\K\Pages\LoginPage');
