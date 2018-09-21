@@ -1,15 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 use function K\db;
 use K\Migration;
 
 $script = array_shift($argv);
 $cmd = array_shift($argv);
-
-\K\load_env();
 
 /**
  * Migrations
