@@ -1,16 +1,7 @@
---TEST--
-creating a new model
---FILE--
 <?php
 
-use function K\db;
-use K\Model;
-
-require_once __DIR__ . '/../bootstrap.php';
-
-Model::setDb(function() {
-    return db();
-});
+use function \K\{db};
+use \K\{Model};
 
 $sql = <<<SQL
 CREATE TEMPORARY TABLE t (
@@ -21,7 +12,7 @@ CREATE TEMPORARY TABLE t (
 SQL;
 db()->query($sql);
 
-class Test extends Model
+class TestModel extends Model
 {
     static protected $table_name = 't';
     static protected $primary_key = 'id';
@@ -32,32 +23,36 @@ class Test extends Model
     ];
 }
 
-// test creating a new model
-$t = new Test(['name' => 'What a test']);
-$t->save();
-var_dump($t->getId());
-$updated_at = $t->getData('updated_at');
-var_dump(!empty($updated_at));
+test("creating a new model", function ($t) {
+    $new = TestModel::create(['name' => uniqid()]);
+    $t->notEquals($new->getId(), Model::DEFAULT, "new id was set");
+    $t->ok(!!$new->getId(), "new id is valid");
+    $t->ok($new->getData('updated_at'), "updated at was set");
+});
 
-// test model updates data
-$t->setData([
-    'name'       => 'Updated...',
-]);
-$t->save();
-$new_updated_at = db()->fetchOne('SELECT updated_at FROM t WHERE id = $1', [$t->getId()]);
-var_dump($new_updated_at != $updated_at);
-var_dump(db()->fetchOne('SELECT name FROM t WHERE id = $1', [$t->getId()]));
+test("updating a model", function ($t) {
+    $new = TestModel::create(['name' => 'Zach']);
+    $updated_at = $new->getData('updated_at');
+    $new->setData(['name' => 'Zachary']);
+    $new->save();
 
-// test model gets deleted
-$t->delete();
-var_dump($t->getId() === Model::DEFAULT);
-var_dump(db()->fetchOne("SELECT COUNT(*) FROM t WHERE id = 1"));
+    $sql = <<<SQL
+SELECT name, updated_at
+FROM t
+WHERE id = $1
+SQL;
+    $db_row = db()->fetchRow($sql, [$new->getId()]);
 
-?>
---EXPECT--
-string(1) "1"
-bool(true)
-bool(true)
-string(10) "Updated..."
-bool(true)
-string(1) "0"
+    $t->notEquals($updated_at, $db_row['updated_at'], "model timestamp updated in db");
+    $t->equals($db_row['name'], 'Zachary', "model field was updated in db");
+});
+
+test("deleting a model", function ($t) {
+    $new = TestModel::create(['name' => uniqid()]);
+    $id = $new->getId();
+    $new->delete();
+
+    $t->equals($new->getId(), Model::DEFAULT, "model's id gets reset");
+    $exists = db()->exists("SELECT 1 FROM t WHERE id = $1", [$id]);
+    $t->notOk($exists, "model no longer exists in db");
+});
