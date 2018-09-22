@@ -148,6 +148,17 @@ function load_env()
 }
 
 /**
+ * Get base url for app
+ *
+ * @param string $path
+ * @return string
+ */
+function url($path = '')
+{
+    return 'https://' . $_SERVER['HTTP_HOST'] . $path;
+}
+
+/**
  * @param string $option
  * @param mixed $value
  */
