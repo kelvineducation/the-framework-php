@@ -9,6 +9,8 @@ if (empty($test_files)) {
     $test_files = glob(__DIR__ . "/../tests/*.phpt");
 }
 
+echo "TAP version 13\n";
+
 $total = 0;
 $passed = 0;
 foreach ($test_files as $test_file) {
