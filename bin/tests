@@ -41,4 +41,4 @@ if ($failed > 0) {
     echo "# ok\n";
 }
 
-exit($exit_code);
+exit(($failed > 0 ? 1 : 0));
