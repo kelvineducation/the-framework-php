@@ -17,10 +17,6 @@ test("deleting from table", function ($t) {
     $t->equals(countLetter('a'), 0, "all letter a's removed");
 });
 
-test("example test failing 1", function ($t) {
-    $t->fail("burp");
-});
-
 test("deleting from table with params", function ($t) {
     db()->query("INSERT INTO t (letter) VALUES ('b'), ('b')");
 
@@ -33,8 +29,4 @@ test("deleting requires where clause", function ($t) {
     $t->throws(function() {
         db()->delete('t', '');
     }, '/No \$where condition passed/');
-});
-
-test("example test failing 2", function ($t) {
-    $t->fail("not today!");
 });
