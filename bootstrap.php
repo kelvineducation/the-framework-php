@@ -13,7 +13,7 @@ option('google_auth_provider', service(function () {
     return new \League\OAuth2\Client\Provider\Google([
         'clientId'     => getenv('GOOGLE_ID'),
         'clientSecret' => getenv('GOOGLE_SECRET'),
-        'redirectUri'  => url('/login/auth'),
+        'redirectUri'  => getenv('LOGIN_PROXY') . '/auth',
         'useOidcMode'  => true,
     ]);
 }));
