@@ -20,6 +20,10 @@ class ErrorHandler
 
     public function handleError($type, $message, $file, $line)
     {
+        if (error_reporting() === 0) {
+            return;
+        }
+
         $this->handled_error = true;
         $error_message = self::getErrorMessage($type, $message, $file, $line);
         $this->outputError($error_message);
