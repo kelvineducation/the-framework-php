@@ -25,4 +25,4 @@ services:
       - DATABASE_URL
       - GOOGLE_ID
       - GOOGLE_SECRET
-      - BASE_URL
+      - LOGIN_PROXY
