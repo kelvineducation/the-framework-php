@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../bootstrap.php';
+
+$test_files = array_slice($argv, 1);
+
+if (empty($test_files)) {
+    $test_files = glob(__DIR__ . "/../tests/*.phpt");
+}
+
+echo "TAP version 13\n";
+
+$total = 0;
+$passed = 0;
+foreach ($test_files as $test_file) {
+    $cmd = sprintf("php %s/test-wrapper.php %s 2>&1", __DIR__, $test_file);
+    $p = popen($cmd, 'r');
+    while (!feof($p)) {
+        $line = fgets($p);
+        if (preg_match("/^((?:not )?ok)/", $line, $matches)) {
+            $total += 1;
+            $passed += ($matches[1] === 'ok' ? 1 : 0);
+        }
+        echo $line;
+    }
+    $exit_code = pclose($p);
+    if ($exit_code !== 0) {
+        exit(1);
+    }
+}
+
+$failed = $total - $passed;
+
+echo "1..{$total}\n";
+echo "# tests {$total}\n";
+echo "# pass  {$passed}\n";
+if ($failed > 0) {
+    echo "# fail  {$failed}\n";
+} else {
+    echo "# ok\n";
+}
+
+exit(($failed > 0 ? 1 : 0));

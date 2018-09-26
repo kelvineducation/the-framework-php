@@ -1,23 +1,21 @@
---TEST--
-db exists()
---FILE--
 <?php
 
-use function K\db;
+use function \K\{db};
 
-require_once __DIR__ . '/../bootstrap.php';
+$sql = <<<SQL
+CREATE TEMPORARY TABLE t AS
+SELECT generate_series(1, 5) AS num;
+SQL;
+db()->query($sql);
 
-var_dump(db()->exists('SELECT 1'));
-var_dump(db()->exists('SELECT NULL'));
+test("rows are returned", function ($t) {
+    $t->ok(db()->exists("SELECT 1"), "Selecting one exists");
+    $t->ok(db()->exists("SELECT NULL"), "Selecting null exists");
+    $t->ok(db()->exists("SELECT false"), "Selecting false exists");
+    $t->ok(db()->exists("SELECT 1 FROM t WHERE num = 1"), "Select from table");
+});
 
-db()->query("CREATE TEMPORARY TABLE t (num int)");
-var_dump(db()->exists("SELECT * FROM t WHERE num = 1"));
-db()->query("INSERT INTO t(num) VALUES (1), (2), (3);");
-var_dump(db()->exists("SELECT * FROM t WHERE num = 2"));
-
-?>
---EXPECT--
-bool(true)
-bool(true)
-bool(false)
-bool(true)
+test("rows are not returned", function ($t) {
+    $t->notOk(db()->exists("SELECT 1 FROM t WHERE num = 6"), "six should not exist");
+    $t->notOk(db()->exists("SELECT * FROM t WHERE num = 7"), "7 should not exist");
+});

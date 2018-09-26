@@ -1,41 +1,26 @@
---TEST--
-db insert()
---FILE--
 <?php
 
-use function K\db;
+use function \K\{db};
 
-require_once __DIR__ . '/../bootstrap.php';
+test(function ($t) {
+    db()->query("CREATE TEMPORARY TABLE t (id serial, a varchar, b int, c bool)");
+    $row = db()->insert('t', [
+        'a' => 'hello',
+        'b' => 2,
+        'c' => true,
+    ]);
+    $t->equals(
+        $row,
+        ['id' => '1', 'a' => 'hello', 'b' => '2', 'c' => 't'],
+        "create record and return default values"
+    );
 
-db()->query("CREATE TEMPORARY TABLE t (id serial, a varchar, b int, c bool)");
-var_dump(db()->insert('t', [
-    'a' => 'hello',
-    'b' => 2,
-    'c' => true,
-]));
-var_dump(db()->insert('t', [
-    'b' => 999,
-]));
+    $row2 = db()->insert('t', ['b' => 999]);
+    $t->equals(
+        $row2,
+        ['id' => '2', 'a' => null, 'b' => '999', 'c' => null],
+        "only insert fields that are passed"
+    );
 
-?>
---EXPECT--
-array(4) {
-  ["id"]=>
-  string(1) "1"
-  ["a"]=>
-  string(5) "hello"
-  ["b"]=>
-  string(1) "2"
-  ["c"]=>
-  string(1) "t"
-}
-array(4) {
-  ["id"]=>
-  string(1) "2"
-  ["a"]=>
-  NULL
-  ["b"]=>
-  string(3) "999"
-  ["c"]=>
-  NULL
-}
+    db()->query("DROP TABLE t");
+});
