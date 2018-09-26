@@ -27,6 +27,10 @@ option('google_auth', service(function () {
     return new GoogleAuth(option('google_auth_provider'), getenv('LOGIN_PROXY'));
 }));
 
+option('postmark', service(function () {
+    return new Postmark\PostmarkClient(getenv('POSTMARK_API_KEY'));
+}));
+
 Model::setDb(function() {
     return option('db');
 });
