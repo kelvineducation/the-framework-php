@@ -26,3 +26,4 @@ services:
       - GOOGLE_ID
       - GOOGLE_SECRET
       - LOGIN_PROXY
+      - REDIS_URL
