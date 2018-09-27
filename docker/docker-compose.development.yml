@@ -11,3 +11,10 @@ services:
       - POSTGRES_DB=pulse
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+  redis:
+    image: redis:3.2.12-alpine
+    restart: always
+    ports:
+      - 6379
+    volumes:
+      - ./data/redis:/data
