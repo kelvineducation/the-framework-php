@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../bootstrap.php';
 
+ini_set('session.save_handler', option('session_save_handler'));
+ini_set('session.save_path', option('session_save_path'));
+
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/login', '\K\Pages\LoginPage');
     $r->addRoute('GET', '/login/auth', '\K\Pages\LoginAuthPage');
