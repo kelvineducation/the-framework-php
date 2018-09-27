@@ -42,6 +42,12 @@ option('session_save_path', service(function () {
     return $save_path;
 }));
 
+option('honeybadger', service(function() {
+    return \Honeybadger\Honeybadger::new([
+        'api_key' => getenv('HONEYBADGER_API_KEY'),
+    ]);
+}));
+
 Model::setDb(function() {
     return option('db');
 });
