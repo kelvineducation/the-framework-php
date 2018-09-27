@@ -4,6 +4,8 @@ require_once __DIR__ . '/../bootstrap.php';
 
 use function K\{option};
 
+$honeybadger = option('honeybadger');
+
 ini_set('session.save_handler', option('session_save_handler'));
 ini_set('session.save_path', option('session_save_path'));
 

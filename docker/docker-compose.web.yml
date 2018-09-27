@@ -27,3 +27,4 @@ services:
       - GOOGLE_SECRET
       - LOGIN_PROXY
       - REDIS_URL
+      - HONEYBADGER_API_KEY
