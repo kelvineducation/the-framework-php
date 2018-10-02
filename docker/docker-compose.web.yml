@@ -22,6 +22,7 @@ services:
     ports:
       - 9000
     environment:
+      - APP_ENV
       - DATABASE_URL
       - GOOGLE_ID
       - GOOGLE_SECRET
