@@ -19,7 +19,8 @@ class WebApp extends App
             'httponly' => true,
             'name'     => 'K',
         ]);
-        /* $honeybadger = option('honeybadger'); */
+        // Register Honeybadger handlers
+        $honeybadger = option('honeybadger');
     }
 
     protected function initialize()
