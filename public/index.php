@@ -14,7 +14,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('GET', '/login/auth', '\K\Pages\LoginAuthPage');
     $r->addRoute('GET', '/logout', '\K\Pages\LogoutPage');
 
-    $r->addRoute('GET', '/', '\K\Pages\TimelinePage');
+    $r->addRoute('GET', '/', '\K\Pages\DashboardPage');
     $r->addRoute('GET', '/explore', '\K\Pages\ReportSummaryPage');
     $r->addRoute('GET', '/organizations', '\K\Pages\OrganizationsPage');
 
