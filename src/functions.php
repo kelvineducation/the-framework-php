@@ -81,7 +81,7 @@ function render(
             $w->write($data);
             return "";
         }, 4096);
-        $v = new View($vars, option('views_dir'));
+        $v = new View($vars, option('views_dir') ?: '');
         $v->render($view_path, $layout);
         ob_end_clean();
     } catch (\Throwable $e) {
