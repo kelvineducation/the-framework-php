@@ -60,7 +60,7 @@ function html(
  */
 function view_path(string $filename)
 {
-    return __DIR__ . '/../views/' . $filename;
+    return $filename;
 }
 
 /**
@@ -75,22 +75,38 @@ function render(
     string $layout = '',
     array $vars = []
 ) {
-    if ($layout !== '') {
-        $stream = new Stream();
-        render($stream, $view_path, '', $vars);
-        render($w, $layout, '', [
-            'content' => $stream->output()
-        ] + $vars);
-        return;
-    }
+    try {
+        $level = ob_get_level();
+        ob_start(function ($data) use ($w) {
+            $w->write($data);
+            return "";
+        }, 4096);
+        $v = new View($vars, option('views_dir'));
+        $v->render($view_path, $layout);
+        ob_end_clean();
+    } catch (\Throwable $e) {
+        while (ob_get_level() > $level) {
+            ob_end_clean();
+        }
 
-    ob_start(function ($data) use ($w) {
-        $w->write($data);
-        return "";
-    });
+        throw $e;
+    }
+}
+
+/**
+ * @param string $view_path
+ * @param array $vars
+ * @return string
+ */
+function partial(string $view_path, array $vars = []): string
+{
+    ob_start();
     extract($vars);
-    include $view_path;
+    include option('views_dir') . '/' . $view_path;
+    $output = ob_get_contents();
     ob_end_clean();
+
+    return $output;
 }
 
 /**
@@ -180,6 +196,10 @@ function option(string $option = null, ...$args)
         return $options[$option];
     }
 
+    if (!array_key_exists($option, $options)) {
+        return null;
+    }
+
     if ($options[$option] instanceof Factory) {
         return call_user_func($options[$option]);
     }
@@ -212,4 +232,4 @@ class NamedCallable
 }
 
 class Service extends NamedCallable { }
-class Factory extends NamedCallable { } 
+class Factory extends NamedCallable { }

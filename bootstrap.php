@@ -44,7 +44,8 @@ option('session_save_path', service(function () {
 
 option('honeybadger', service(function() {
     return \Honeybadger\Honeybadger::new([
-        'api_key' => getenv('HONEYBADGER_API_KEY'),
+        'api_key'          => getenv('HONEYBADGER_API_KEY'),
+        'environment_name' => getenv('APP_ENV') ?: 'unknown',
     ]);
 }));
 
