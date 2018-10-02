@@ -40,6 +40,8 @@ class WebApp extends App
         $this->dispatch('/questions', '\K\Pages\QuestionsPage');
         $this->dispatchPost('/questions/add', '\K\Pages\QuestionAddPage');
 
+        $this->dispatch('/reports/comments', '\K\Pages\CommentReportPage');
+
         $this->dispatch('/pulses', '\K\Pages\PulsesPage');
         $this->dispatch('/pulses/remove', '\K\Pages\PulseRemovePage');
         $this->dispatchPost('/pulses/add', '\K\Pages\PulseAddPage');
