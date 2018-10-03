@@ -46,6 +46,8 @@ class WebApp extends App
         $this->dispatch('/pulses/remove', '\K\Pages\PulseRemovePage');
         $this->dispatchPost('/pulses/add', '\K\Pages\PulseAddPage');
 
+        $this->dispatch('/settings', '\K\Pages\SettingsPage');
+
         $this->dispatch('/api/v1/pulse', '\K\Pages\ApiPulsePage');
         $this->dispatchPost('/api/v1/pulse', '\K\Pages\ApiReceivePulsePage');
         $this->dispatchOptions('/api/v1/pulse', '\K\Pages\ApiCorsPage');
