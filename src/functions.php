@@ -131,6 +131,7 @@ function require_login(ResponseWriterInterface $w, RequestInterface $request)
         redirect($w, '/login?' . $q);
         return false;
     }
+    option('honeybadger')->context('user_id', $user_id);
     $user = User::find($user_id);
     return $user;
 }
@@ -148,6 +149,7 @@ function require_organization(ResponseWriterInterface $w, RequestInterface $requ
         redirect($w, '/organizations');
         return false;
     }
+    option('honeybadger')->context('organization_id', $organization_id);
     $organization = Organization::find($organization_id);
     return $organization;
 }
