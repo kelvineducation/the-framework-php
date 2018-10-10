@@ -127,7 +127,8 @@ function require_login(ResponseWriterInterface $w, RequestInterface $request)
 {
     $user_id = $request->getSessionParam('user_id');
     if (!$user_id) {
-        redirect($w, '/login');
+        $q = http_build_query(['prev_uri' => $_SERVER['REQUEST_URI']]);
+        redirect($w, '/login?' . $q);
         return false;
     }
     $user = User::find($user_id);
