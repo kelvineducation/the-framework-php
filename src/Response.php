@@ -68,6 +68,14 @@ class Response implements ResponseWriterInterface
     /**
      * @param array $output_methods
      */
+    public function send(array $output_methods = [])
+    {
+        $this->output($output_methods);
+    }
+
+    /**
+     * @param array $output_methods
+     */
     public function output(array $output_methods = [])
     {
         $output_methods = array_merge([
@@ -85,11 +93,9 @@ class Response implements ResponseWriterInterface
 
         // Session headers
         if (!empty($this->session)) {
-            session_start();
             foreach ($this->session as $key => $value) {
                 $_SESSION[$key] = $value;
             }
-            session_write_close();
         }
 
         foreach ($this->headers as $name => $value) {

@@ -17,6 +17,8 @@ RUN apk add --no-cache --virtual .build-deps \
         bcmath \
         pgsql \
         zip \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
     && apk del --no-cache .build-deps
 
 RUN curl -sS https://getcomposer.org/installer >composer-setup.php \

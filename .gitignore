@@ -3,6 +3,7 @@
 /Makefile
 /docker-compose.yml
 /data/postgres
+/data/redis
 /.env
 .DS_Store
 .env.php
