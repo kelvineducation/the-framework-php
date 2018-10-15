@@ -1,6 +1,6 @@
 <?php
 
-namespace K;
+namespace K\Form;
 
 interface RequestInterface
 {
@@ -10,11 +10,4 @@ interface RequestInterface
      * @return mixed
      */
     public function getParam(string $key, $default = null);
-
-    /**
-     * @param string $key
-     * @param string|null $default
-     * @return mixed
-     */
-    public function getSessionParam(string $key, string $default = null);
 }

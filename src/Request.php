@@ -2,7 +2,7 @@
 
 namespace K;
 
-class Request implements RequestInterface
+class Request implements RequestInterface, Form\RequestInterface
 {
     public function __construct()
     {
@@ -13,10 +13,10 @@ class Request implements RequestInterface
 
     /**
      * @param string $key
-     * @param string|null $default
+     * @param mixed $default
      * @return mixed
      */
-    public function getParam(string $key, string $default = null)
+    public function getParam(string $key, $default = null)
     {
         if (isset($_POST[$key])) {
             return $_POST[$key];

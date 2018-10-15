@@ -71,13 +71,19 @@ class App
             $app->handleNotAllowed($w);
         } else {
             $request = new \K\Request();
-            $app->before(...$route_info);
-            call_user_func([$route_info[1]['page'], 'handleRequest'], $request, $route_info[2]);
+            $route = $route_info[1];
+            $app->before($route, $w, $request);
+            call_user_func(
+                [$route_info[1]['page'], 'handleRequest'],
+                $w,
+                $request,
+                $route_info[2]
+            );
         }
         $w->send();
     }
 
-    protected function before($route) { }
+    protected function before($route, $response, $request) { }
     protected function configure() { }
     protected function initialize() {  }
     protected function handleServerError(\K\ResponseWriterInterface $w, \Throwable $e) { }

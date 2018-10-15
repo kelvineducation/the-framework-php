@@ -36,7 +36,7 @@ class View implements \ArrayAccess
 
     public function h($key)
     {
-        return htmlspecialchars($this->vars[$key], ENT_QUOTES, 'UTF-8');
+        return esc($this->vars[$key] ?: '');
     }
 
     public function start($name)
