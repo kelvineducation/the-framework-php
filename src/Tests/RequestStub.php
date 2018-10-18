@@ -6,7 +6,7 @@ class RequestStub implements \K\RequestInterface
 {
     public $params = [];
     public $session_params = [];
-    public function getParam(string $key, string $default = null)
+    public function getParam(string $key, $default = null)
     {
         return $this->params[$key] ?? $default;
     }

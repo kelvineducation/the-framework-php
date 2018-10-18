@@ -16,5 +16,5 @@ interface RequestInterface
      * @param string|null $default
      * @return mixed
      */
-    public function getSessionParam(string $key, string $default = null);
+    public function getSessionParam(string $key, ?string $default = null);
 }
