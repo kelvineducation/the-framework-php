@@ -14,6 +14,7 @@
         "ext-redis": "*",
         "nikic/fast-route": "^1.3",
         "league/oauth2-google": "^2.2",
+        "wildbit/postmark-php": "^2.6",
         "honeybadger-io/honeybadger-php": "^1.2"
     },
     "require-dev": {

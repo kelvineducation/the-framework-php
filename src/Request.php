@@ -2,8 +2,11 @@
 
 namespace K;
 
-class Request implements RequestInterface
+class Request implements RequestInterface, Form\RequestInterface
 {
+    private $headers;
+    private $params;
+
     public function __construct()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER['CONTENT_TYPE'] === 'application/json') {
@@ -13,18 +16,15 @@ class Request implements RequestInterface
 
     /**
      * @param string $key
-     * @param string|null $default
+     * @param mixed $default
      * @return mixed
      */
-    public function getParam(string $key, string $default = null)
+    public function getParam(string $key, $default = null)
     {
-        if (isset($_POST[$key])) {
-            return $_POST[$key];
-        }
-        if (isset($_GET[$key])) {
-            return $_GET[$key];
-        }
-        return $default;
+        $params = $this->getParams();
+
+        return $params['JSON'][$key] ?? $params['POST'][$key]
+            ?? $params['GET'][$key] ?? $default;
     }
 
     /**
@@ -34,9 +34,53 @@ class Request implements RequestInterface
      */
     public function getSessionParam(string $key, string $default = null)
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start(['read_and_close' => true]);
-        }
         return $_SESSION[$key] ?? $default;
+    }
+
+    public function getHeader(string $key): string
+    {
+        $headers = $this->getHeaders();
+        return $headers[$key] ?? '';
+    }
+
+    public function getMethod(): string
+    {
+        return $_SERVER['REQUEST_METHOD'];
+    }
+
+    private function getParams()
+    {
+        if ($this->params) {
+            return $this->params;
+        }
+
+        $params = [];
+        $params['GET'] =& $_GET;
+        $params['POST'] =& $_POST;
+        if ($this->getMethod() === 'POST'
+            && $this->getHeader('CONTENT_TYPE') === 'application/json'
+        ) {
+            $params['JSON'] = json_decode(file_get_contents('php://input'), true);
+        }
+
+        $this->params = $params;
+
+        return $this->params;
+    }
+
+    private function getHeaders(): array
+    {
+        if ($this->headers) {
+            return $this->headers;
+        }
+        $headers = [];
+        $headers['CONTENT_TYPE'] = $_SERVER['CONTENT_TYPE'] ?? '';
+        foreach ($_SERVER as $key => $value) {
+            if (0 === strpos($key, 'HTTP_')) {
+                $headers[substr($key, 5)] = $value;
+            }
+        }
+        $this->headers = $headers;
+        return $this->headers;
     }
 }

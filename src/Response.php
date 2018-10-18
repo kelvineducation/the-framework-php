@@ -65,6 +65,16 @@ class Response implements ResponseWriterInterface
         $this->session[$key] = $value;
     }
 
+    public function isRedirect(): bool
+    {
+        return $this->status_code === 302;
+    }
+
+    public function hasBody(): bool
+    {
+        return (bool) $this->body_stream;
+    }
+
     /**
      * @param array $output_methods
      */

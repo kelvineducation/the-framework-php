@@ -3,7 +3,11 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use function K\{option, service, url};
-use K\{Db, Model, GoogleAuth};
+use K\{Db, Model, GoogleAuth, Request};
+
+option('request', service(function () {
+    return new Request;
+}));
 
 option('db', service(function () {
     return new Db(getenv('DATABASE_URL'));
@@ -48,6 +52,10 @@ option('honeybadger', service(function() {
         'environment_name' => getenv('APP_ENV') ?: 'unknown',
         'handlers'         => ['exception' => false, 'error' => false],
     ]);
+}));
+
+option('postmark', service(function () {
+    return new Postmark\PostmarkClient(getenv('POSTMARK_API_KEY'));
 }));
 
 Model::setDb(function() {

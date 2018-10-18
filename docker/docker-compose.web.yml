@@ -27,5 +27,6 @@ services:
       - GOOGLE_ID
       - GOOGLE_SECRET
       - LOGIN_PROXY
+      - POSTMARK_API_KEY
       - REDIS_URL
       - HONEYBADGER_API_KEY

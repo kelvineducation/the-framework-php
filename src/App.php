@@ -44,74 +44,37 @@ class App
 
         $app->initialize();
 
-        $dispatcher = \FastRoute\simpleDispatcher(
-            function (\FastRoute\RouteCollector $r) use ($app) {
-                foreach ($app->routes as $route) {
-                    $r->addRoute(
-                        $route['method'],
-                        $route['path'],
-                        $route
-                    );
-                }
-            }
-        );
+        try {
+            $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+            [$page_class, $vars] = page($path, 'Home', '\K\Pages\\');
 
-        $uri = $_SERVER['REQUEST_URI'];
-        if (false !== ($pos = strpos($uri, '?'))) {
-            $uri = substr($uri, 0, $pos);
-        }
-        $uri = rawurldecode($uri);
-
-        $route_info = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $uri);
-
-        $w = new \K\Response();
-        if ($route_info[0] == \FastRoute\Dispatcher::NOT_FOUND) {
-            $app->handleNotFound($w);
-        } elseif ($route_info[0] == \FastRoute\Dispatcher::METHOD_NOT_ALLOWED) {
-            $app->handleNotAllowed($w);
-        } else {
+            $response = new \K\Response();
             $request = new \K\Request();
-            $app->before(...$route_info);
-            call_user_func([$route_info[1]['page'], 'handleRequest'], $request, $route_info[2]);
+            if (!class_exists($page_class)) {
+                $app->handleNotFound($response);
+                $response->send();
+                return;
+            }
+
+            $page = call_user_func(["$page_class", 'factory']);
+            $page->__invoke($response, $request, $vars);
+        } catch (\Throwable $e) {
+            $app->handleServerError($response, $e);
         }
-        $w->send();
+
+        $response->send();
     }
 
-    protected function before($route) { }
+    protected function before($route, $response, $request) { }
     protected function configure() { }
     protected function initialize() {  }
     protected function handleServerError(\K\ResponseWriterInterface $w, \Throwable $e) { }
     protected function handleNotFound(\K\ResponseWriterInterface $w) { }
     protected function handleNotAllowed(\K\ResponseWriterInterface $w) { }
 
-    protected function dispatch(string $path, string $page, array $options = [])
-    {
-        $this->route('GET', $path, $page, $options);
-    }
-
-    protected function dispatchPost(string $path, string $page, array $options = [])
-    {
-        $this->route('POST', $path, $page, $options);
-    }
-
-    protected function dispatchOptions(string $path, string $page, array $options = [])
-    {
-        $this->route('OPTIONS', $path, $page, $options);
-    }
-
     protected function registerErrorHandler(int $err_code, callable $handler)
     {
         self::$error_handlers[$err_code] = $handler;
-    }
-
-    private function route(string $method, string $path, string $page, array $options = [])
-    {
-        $this->routes[] = [
-            'method'  => $method,
-            'path'    => $path,
-            'page'    => $page,
-            'options' => $options,
-        ];
     }
 
     private function defaultErrorHandler(\Throwable $e)

@@ -11,6 +11,8 @@ class Stream implements WriterInterface
      */
     private $stream;
 
+    private $size = 0;
+
     /**
      * @param string $data
      * @return int Number of bytes written
@@ -22,7 +24,13 @@ class Stream implements WriterInterface
         if ($bytes === false) {
             throw new RuntimeException("Could not write to stream");
         }
+        $this->size += $bytes;
         return $bytes;
+    }
+
+    public function getSize(): int
+    {
+        return $this->size;
     }
 
     /**
