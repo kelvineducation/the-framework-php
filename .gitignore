@@ -7,4 +7,5 @@
 /.env
 .DS_Store
 .env.php
+tags
 /node_modules/
