@@ -35,6 +35,15 @@ class Form
         return $field;
     }
 
+    public function addDate(string $name, string $value = '', string $label = '')
+    {
+        $field = new Field($name, 'date', $label);
+        $field->setAttribute('class', 'form-control');
+        $field->setValue($this->request->getParam($name, $value));
+        $this->addField($field);
+        return $field;
+    }
+
     public function addSelect(string $name, array $options = [], array $selected = [], string $label = '')
     {
         $field = new Field($name, 'select', $label);

@@ -88,6 +88,7 @@ class Field
     {
         if ($this->type === 'text' || $this->type === 'email'
             || $this->type === 'submit' || $this->type === 'hidden'
+            || $this->type === 'date'
         ) {
             $default_attributes = [
                 'type'  => $this->type,
