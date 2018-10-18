@@ -3,7 +3,11 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use function K\{option, service, url};
-use K\{Db, Model, GoogleAuth};
+use K\{Db, Model, GoogleAuth, Request};
+
+option('request', service(function () {
+    return new Request;
+}));
 
 option('db', service(function () {
     return new Db(getenv('DATABASE_URL'));

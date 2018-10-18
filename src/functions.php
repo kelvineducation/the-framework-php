@@ -2,6 +2,8 @@
 
 namespace K;
 
+define('URL_PARAM_PREFIX', '_');
+
 function esc(string $text): string
 {
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
@@ -17,12 +19,12 @@ function url_for(string $path, array $params = [])
  * @param string $url
  * @param int|null $status
  */
-function redirect(ResponseWriterInterface $w, string $url, int $status = null)
+function redirect($response, $request, string $url, int $status = null)
 {
-    $w->withStatus($status ?: 302);
-    $w->withHeader('Location', $url);
-    if (isset($_SERVER['HTTP_TURBOLINKS_REFERRER'])) {
-        $_SESSION['_turbolinks_location'] = $url;
+    $response->withStatus($status ?: 302);
+    $response->withHeader('Location', $url);
+    if ($request->getHeader('TURBOLINKS_REFERRER')) {
+        $response->setSessionParam('_turbolinks_location', $url);
     }
 }
 
@@ -46,25 +48,18 @@ function json(ResponseWriterInterface $w, $data, int $status = null, $encoding =
     return $w;
 }
 
-/**
- * @param ResponseWriterInterface $w
- * @param string $view_path
- * @param string $layout
- * @param array $vars
- * @param int|null $status
- */
 function html(
-    ResponseWriterInterface $w,
+    $response,
     string $view_path,
     string $layout = '',
     array $vars = [],
     int $status = null
 ) {
     if ($status !== null) {
-        $w->withStatus($status);
+        $response->withStatus($status);
     }
-    $w->withHeader('Content-Type', 'text/html; charset=utf-8');
-    render($w, $view_path, $layout, $vars);
+    $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+    render($response, $view_path, $layout, $vars);
 }
 
 /**
@@ -141,7 +136,7 @@ function require_login(ResponseWriterInterface $w, RequestInterface $request)
     $user_id = $request->getSessionParam('user_id');
     if (!$user_id) {
         $q = http_build_query(['prev_uri' => $_SERVER['REQUEST_URI']]);
-        redirect($w, '/login?' . $q);
+        redirect($w, $request, '/login?' . $q);
         return false;
     }
     option('honeybadger')->context('user_id', $user_id);
@@ -159,7 +154,7 @@ function require_organization(ResponseWriterInterface $w, RequestInterface $requ
 {
     $organization_id = $request->getSessionParam('organization_id');
     if (!$organization_id) {
-        redirect($w, '/organizations');
+        redirect($w, $request, '/organizations');
         return false;
     }
     option('honeybadger')->context('organization_id', $organization_id);
@@ -249,3 +244,53 @@ class NamedCallable
 
 class Service extends NamedCallable { }
 class Factory extends NamedCallable { }
+
+
+function page(
+    string $path,
+    string $default,
+    string $namespace = '',
+    string $suffix = 'Page'
+): array
+{
+    $params = [];
+    $page_from_path = array_reduce(explode('/', $path), function ($page, $path) use (&$params) {
+        if (is_numeric($path)) {
+            $params[] = $path;
+            return $page;
+        }
+        if (strpos($path, URL_PARAM_PREFIX) === 0) {
+            $params[] = substr($path, 1);
+            return $page;
+        }
+        return $page . str_replace(' ', '', ucwords(str_replace('_', ' ', $path)));
+    }, '');
+
+    if ($page_from_path === '') {
+        $page_from_path = $default;
+    }
+    $page = $namespace . $page_from_path . $suffix;
+
+    return [$page, $params];
+}
+
+
+function path(string $class, array $params = [], string $default = 'HomePage', string $suffix = 'Page'): string
+{
+    if ($namespace = strrchr($class, '\\')) {
+        $class = substr($namespace, 1); // Remove namespace
+    }
+    if ($class === $default) {
+        $path = '/';
+    } else {
+        $class = substr($class, 0, strrpos($class, $suffix)); // Remove suffix
+        $path = strtolower(preg_replace('/[A-Z]/', '/\\0', $class));
+    }
+
+    return array_reduce($params, function ($path, $param) {
+        if (is_numeric($param)) {
+            return $path . '/' . $param;
+        }
+        return $path . '/' . URL_PARAM_PREFIX . $param;
+    }, $path);
+}
