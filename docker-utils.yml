@@ -1,0 +1,11 @@
+version: '3.5'
+services:
+  yaml-merge:
+    image: kelvineducation/yaml-merge:0.1.1
+    command: -o ${MERGED_COMPOSE} ${COMPOSE_FILES}
+    networks: []
+    volumes:
+      - .:/app
+    # make sure the output file is owned by the user running this
+    # by running the container internally with the same UID
+    user: ${UID}:${GID}
