@@ -1,3 +1,6 @@
+export UID=$(shell id -u)
+export GID=$(shell id -g)
+
 install: build-compose-file ${INSTALL_TARGET}
 
 install-docker:
@@ -16,6 +19,5 @@ install-dev-db:
 install-dev-config:
 
 build-compose-file:
-	cp -a docker/docker-compose.*.yml .
-	docker-compose $(COMPOSE_FILES) config >docker-compose.yml
-	rm docker-compose.*.yml
+	rm -f docker-stack.yml docker-compose.yml
+	docker-compose -f docker-utils.yml run --rm yaml-merge
