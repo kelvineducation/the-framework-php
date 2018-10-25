@@ -58,11 +58,10 @@ class App
 
             $page = call_user_func(["$page_class", 'factory']);
             $page->__invoke($response, $request, $vars);
+            $response->send();
         } catch (\Throwable $e) {
-            $app->handleServerError($response, $e);
+            $app->defaultErrorHandler($e);
         }
-
-        $response->send();
     }
 
     protected function before($route, $response, $request) { }
