@@ -35,6 +35,15 @@ class Form
         return $field;
     }
 
+    public function addNumber(string $name, string $value = '', string $label = '')
+    {
+        $field = new Field($name, 'number', $label);
+        $field->setAttribute('class', 'form-control');
+        $field->setValue($this->request->getParam($name, $value));
+        $this->addField($field);
+        return $field;
+    }
+
     public function addDate(string $name, string $value = '', string $label = '')
     {
         $field = new Field($name, 'date', $label);
@@ -82,6 +91,18 @@ class Form
         $field->setValue($value);
         $this->addField($field);
         $this->hidden_fields[$field->getName()] = $field;
+        return $field;
+    }
+
+    public function addCheckbox(string $name, string $value, bool $checked = false, string $label = '')
+    {
+        $field = new Field($name, 'checkbox', $label);
+        $field->setAttribute('class', 'form-control');
+        $field->setValue($value);
+        if ($this->request->getParam($name, $checked)) {
+            $field->setAttribute('checked', 'checked');
+        }
+        $this->addField($field);
         return $field;
     }
 
