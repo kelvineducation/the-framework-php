@@ -106,11 +106,12 @@ SQL;
     /**
      * @param string $where
      * @param array $params
+     * @param string $order_by
      * @return static|null
      * @throws ModelException
      * @throws DbException
      */
-    public static function findWhere(string $where, array $params = []): ?Model
+    public static function findWhere(string $where, array $params = [], string $order_by = ''): ?Model
     {
         if (empty(trim($where))) {
             throw new ModelException(sprintf(
@@ -123,9 +124,11 @@ SQL;
 SELECT *
 FROM %s
 WHERE %s
+%s
 LIMIT 1
 SQL;
-        $sql = sprintf($sql, static::$table_name, $where);
+        $order_by_sql = ($order_by ? "ORDER BY {$order_by}" : '');
+        $sql = sprintf($sql, static::$table_name, $where, $order_by_sql);
         $row = self::db()->fetchRow($sql, $params);
         if (!$row) {
             return null;
