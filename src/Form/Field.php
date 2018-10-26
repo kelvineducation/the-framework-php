@@ -135,6 +135,10 @@ class Field
 
     public function toHtmlWithLabel(): string
     {
+        if ($this->type === 'submit') {
+            return $this->toHtml();
+        }
+
         $html = <<<HTML
 <label for="{$this->h($this->getId())}">{$this->h($this->label)}</label>
 {$this->toHtml()}
