@@ -23,7 +23,7 @@ class Form
         $this->name = $name;
         $this->action = $action;
         $this->method = $method;
-        $this->addHidden(self::FIELD_SUBMITTED, 't');
+        $this->addHidden(self::FIELD_SUBMITTED, $name);
     }
 
     public function addText(string $name, string $value = '', string $label = '')
@@ -108,7 +108,7 @@ class Form
 
     public function wasSubmitted(): bool
     {
-        return ($this->getData(self::FIELD_SUBMITTED) === 't');
+        return ($this->getData(self::FIELD_SUBMITTED) === $this->name);
     }
 
     public function addError(string $error)
