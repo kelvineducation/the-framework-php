@@ -26,4 +26,7 @@ RUN curl -sS https://getcomposer.org/installer >composer-setup.php \
         --install-dir=/usr/local/bin --filename=composer \
     && rm composer-setup.php
 
+RUN curl -sS https://raw.githubusercontent.com/eficode/wait-for/master/wait-for > /usr/local/bin/wait-for \
+    && chmod 0755 /usr/local/bin/wait-for
+
 WORKDIR /app

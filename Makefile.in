@@ -7,7 +7,9 @@ install-docker:
 	docker-compose build
 	docker-compose up -d
 	docker-compose exec php-fpm composer install
-	docker-compose exec php-fpm ./bin/K migrate:setup
+	docker-compose exec php-fpm \
+		/usr/local/bin/wait-for postgres:5432 -t 30 \
+		-- ./bin/K migrate:setup
 	docker-compose exec php-fpm ./bin/K migrate
 
 install-buoy: install-dev-db install-dev
