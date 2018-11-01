@@ -16,6 +16,7 @@ class Form
     private $hidden_fields = [];
     private $is_valid_fn;
     private $errors = [];
+    private $attributes = [];
 
     public function __construct(RequestInterface $request, string $name, string $action, string $method = 'get')
     {
@@ -24,6 +25,12 @@ class Form
         $this->action = $action;
         $this->method = $method;
         $this->addHidden(self::FIELD_SUBMITTED, $name);
+    }
+
+    public function setAttribute(string $attribute, string $value): Form
+    {
+        $this->attributes[$attribute] = $value;
+        return $this;
     }
 
     public function addText(string $name, string $value = '', string $label = '')
@@ -173,13 +180,13 @@ HTML;
     {
         return sprintf(
             "<form %s>\n%s\n%s\n",
-            $this->htmlify([
+            $this->htmlify(array_merge([
                 'name'       => $this->name,
                 'action'     => $this->action,
                 'method'     => $this->method,
                 'novalidate' => 'novalidate',
                 'class'      => 'needs-validation',
-            ]),
+            ], $this->attributes)),
             implode("\n", array_map(function ($hidden_field) {
                 return $hidden_field->toHtml();
             }, $this->hidden_fields)),
