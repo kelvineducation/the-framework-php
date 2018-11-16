@@ -87,6 +87,12 @@ class Model
      */
     public static function find($id): ?Model
     {
+        static $identity_map = [];
+        $class_name = static::class;
+        if (isset($identity_map[$class_name][$id])) {
+            return $identity_map[$class_name][$id];
+        }
+
         $sql = <<<SQL
 SELECT *
 FROM %s
@@ -99,6 +105,7 @@ SQL;
             return null;
         }
         $model = new static($row, false);
+        $identity_map[$class_name][$id] = $model;
 
         return $model;
     }
