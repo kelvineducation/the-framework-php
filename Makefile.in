@@ -10,15 +10,13 @@ install-docker:
 	docker-compose exec php-fpm \
 		/usr/local/bin/wait-for postgres:5432 -t 30 \
 		-- ./bin/K migrate:setup
+
+install-buoy: install-dev
+
+install-dev: install-docker migrate
+
+migrate:
 	docker-compose exec php-fpm ./bin/K migrate
-
-install-buoy: install-dev-db install-dev
-
-install-dev: install-dev-config install-docker
-
-install-dev-db:
-
-install-dev-config:
 
 build-compose-file:
 	rm -f docker-stack.yml docker-compose.yml

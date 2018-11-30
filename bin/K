@@ -66,6 +66,11 @@ if ($cmd === 'migrate') {
     exit(0);
 }
 
+if ($cmd === 'worker') {
+    require_once __DIR__ . '/../scripts/worker.php';
+    exit(0);
+}
+
 echo <<<HELP
 bin/K {{then read the source}}
 HELP;
