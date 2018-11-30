@@ -30,3 +30,4 @@ services:
       - POSTMARK_API_KEY
       - REDIS_URL
       - HONEYBADGER_API_KEY
+      - POPUP_URL
