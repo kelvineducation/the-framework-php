@@ -146,7 +146,12 @@ class Form
     public function getData(string $field_name = '')
     {
         $data = [];
-        foreach (array_keys($this->fields) as $name) {
+        $field_names = array_map(function($field) {
+            return $field->getName();
+        }, array_filter($this->fields, function ($field) {
+            return $field->is_disabled === false;
+        }));
+        foreach ($field_names as $name) {
             $data[$name] = $this->request->getParam($name);
         }
         if ($field_name !== '') {
