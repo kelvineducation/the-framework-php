@@ -6,6 +6,7 @@ class Field
 {
     public $label = '';
     public $required = false;
+    public $is_disabled = false;
 
     private $name;
     private $type;
@@ -84,6 +85,11 @@ class Field
         $this->invalid_feedback = $invalid_feedback ?: "{$this->label} is required.";
     }
 
+    public function setDisabled()
+    {
+        $this->is_disabled = true;
+    }
+
     public function toHtml(): string
     {
         if ($this->type === 'text' || $this->type === 'email'
@@ -100,6 +106,9 @@ class Field
             if ($this->required === true) {
                 $default_attributes['required'] = '';
             }
+            if ($this->is_disabled === true) {
+                $default_attributes['disabled'] = '';
+            }
             $attributes = array_merge($default_attributes, $this->attributes);
 
             return sprintf("<input %s>", $this->htmlify($attributes));
@@ -110,6 +119,9 @@ class Field
             ];
             if ($this->required === true) {
                 $default_attributes['required'] = '';
+            }
+            if ($this->is_disabled === true) {
+                $default_attributes['disabled'] = '';
             }
             $attributes = array_merge($default_attributes, $this->attributes);
 
