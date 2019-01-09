@@ -39,12 +39,24 @@ SQL;
         $tmpl = <<<'TMPL'
 <?php
 
+use function K\db;
+
 // COMMENT
 
 if ($rollback === true) {
-    // rollback logic
-    return;
+    db()->query("DROP TABLE xxxx;");
+    return true;
 }
+
+$sql = <<<SQL
+CREATE TABLE xxxx (
+    xxxx_id serial PRIMARY KEY,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+SQL;
+
+db()->query($sql);
 
 TMPL;
         $full_filename = __DIR__ . '/../migrations/' . $filename;
