@@ -294,3 +294,25 @@ function path(string $class, array $params = [], string $default = 'HomePage', s
         return $path . '/' . URL_PARAM_PREFIX . $param;
     }, $path);
 }
+
+function respondent_html_helper($respondent_type)
+{
+    switch ($respondent_type) {
+    case 'students':
+        $respondent = "Students";
+        break;
+    case 'parents':
+        $respondent = "Community";
+        break;
+    case 'staff':
+        $respondent = "Staff";
+        break;
+    }
+
+    $html = <<<HTML
+<img src="/images/{$respondent_type}.svg"
+    style="margin-top: -5px; width: 20px;"> {$respondent}
+HTML;
+
+    return $html;
+}
