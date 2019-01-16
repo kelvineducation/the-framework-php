@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "php": "~7.3.0",
         "ext-json": "*",
         "ext-pgsql": "*",
         "ext-redis": "*",

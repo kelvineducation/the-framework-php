@@ -1,4 +1,4 @@
-FROM php:7.2-fpm-alpine
+FROM php:7.3-fpm-alpine
 
 # git is for composer
 # bcmath is for phpunit
@@ -12,7 +12,7 @@ RUN apk add --no-cache --virtual .build-deps \
         git \
         postgresql-dev \
         postgresql-client \
-        zlib-dev \
+        libzip-dev \
     && docker-php-ext-install \
         bcmath \
         pgsql \
