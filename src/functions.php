@@ -308,10 +308,11 @@ function respondent_html_helper($respondent_type)
         $respondent = "Staff";
         break;
     }
-
+ // <img src="/images/{$respondent_type}.svg" style="margin-top: -5px; width: 20px;"> 
     $html = <<<HTML
-<img src="/images/{$respondent_type}.svg"
-    style="margin-top: -5px; width: 20px;"> {$respondent}
+<div class="respondent respondent-{$respondent_type}">
+  {$respondent}
+</div>
 HTML;
 
     return $html;
