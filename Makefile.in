@@ -18,6 +18,9 @@ install-dev: install-docker migrate
 migrate:
 	docker-compose exec php-fpm ./bin/K migrate
 
+php-cli:
+	docker-compose exec php-fpm /bin/sh
+
 build-compose-file:
 	rm -f docker-stack.yml docker-compose.yml
 	docker-compose -f docker-utils.yml run --rm yaml-merge
