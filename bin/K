@@ -71,6 +71,11 @@ if ($cmd === 'worker') {
     exit(0);
 }
 
+if ($cmd === 'scheduler') {
+    require_once __DIR__ . '/../scripts/scheduler.php';
+    exit(0);
+}
+
 echo <<<HELP
 bin/K {{then read the source}}
 HELP;
