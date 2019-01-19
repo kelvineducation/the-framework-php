@@ -50,4 +50,11 @@ class DbResult
 
         return $col;
     }
+
+    public function fetchAll(): \Generator
+    {
+        while ($row = $this->fetchRow()) {
+            yield $row;
+        }
+    }
 }

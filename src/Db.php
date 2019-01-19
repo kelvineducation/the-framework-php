@@ -89,6 +89,13 @@ class Db
         return $val;
     }
 
+    public function fetchAll(string $sql, array $params = []): \Generator
+    {
+        $rows = $this->query($sql, $params)->fetchAll();
+
+        return $rows;
+    }
+
     /**
      * @param string $table
      * @param array $data
