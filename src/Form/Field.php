@@ -109,6 +109,9 @@ class Field
             if ($this->is_disabled === true) {
                 $default_attributes['disabled'] = '';
             }
+            if (strstr($this->getId(), '[]') !== false) {
+                unset($default_attributes['id']);
+            }
             $attributes = array_merge($default_attributes, $this->attributes);
 
             return sprintf("<input %s>", $this->htmlify($attributes));
