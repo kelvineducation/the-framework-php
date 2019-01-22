@@ -317,3 +317,8 @@ HTML;
 
     return $html;
 }
+
+function asset_url(string $asset_url)
+{
+    return \K\AssetBuster::track($asset_url);
+}
