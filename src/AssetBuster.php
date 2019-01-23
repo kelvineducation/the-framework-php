@@ -74,7 +74,8 @@ class AssetBuster
                 $assets[$url] = $asset;
             }
 
-            file_put_contents($manifest, json_encode($assets));
+            ksort($assets);
+            file_put_contents($manifest, json_encode($assets, JSON_PRETTY_PRINT));
         }
 
         return $assets;
