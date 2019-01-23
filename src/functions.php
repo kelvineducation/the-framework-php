@@ -320,5 +320,5 @@ HTML;
 
 function asset_url(string $asset_url)
 {
-    return \K\AssetBuster::track($asset_url);
+    return option('asset_buster')->getAssetUrl($asset_url);
 }
