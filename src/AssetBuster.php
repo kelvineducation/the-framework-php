@@ -65,7 +65,7 @@ class AssetBuster
     private function syncManifest()
     {
         foreach ($this->options['dirnames'] as $dirname) {
-            $files = new DirectoryIterator($this->getPublicPath($dirname));
+            $files = new DirectoryIterator($this->public_path . '/' . $dirname);
             foreach ($files as $file) {
                 $this->syncAsset($dirname, $file);
             }
@@ -109,7 +109,7 @@ class AssetBuster
         }
         $link_filename = $sha . '_' . $file->getFilename();
         $link_url = '/asset_links/' . $dirname . '/' . $link_filename;
-        $link_pathname = $this->getPublicPath($link_url);
+        $link_pathname = $this->public_path . '/' . $link_url;
         $relative_target_pathname = '../../' . $dirname . '/' . $file->getFilename();
 
         $this->assets[$url] = [
@@ -148,7 +148,7 @@ class AssetBuster
             return;
         }
 
-        $old_symlink_path = $this->getPublicPath($this->assets[$url]['url']);
+        $old_symlink_path = $this->public_path . '/' . $this->assets[$url]['url'];
         $remove_old_symlink = unlink($old_symlink_path);
         if ($remove_old_symlink === false) {
             throw new \Exception(sprintf(
@@ -156,15 +156,5 @@ class AssetBuster
                 $old_symlink_path
             ));
         }
-    }
-
-    private function getPublicPath(...$dirs)
-    {
-        $path = $this->public_path;
-        foreach ($dirs as $dir) {
-            $path .= '/' . $dir;
-        }
-
-        return $path;
     }
 }
