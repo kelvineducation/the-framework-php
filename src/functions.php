@@ -317,3 +317,8 @@ HTML;
 
     return $html;
 }
+
+function asset_url(string $asset_url)
+{
+    return option('asset_buster')->getAssetUrl($asset_url);
+}
