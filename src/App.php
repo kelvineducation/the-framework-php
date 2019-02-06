@@ -19,11 +19,6 @@ class App
      */
     private static $error_handlers = [];
 
-    /**
-     * @param array $routes
-     */
-    private $routes = [];
-
     public static function run()
     {
         option('env', ENV_PRODUCTION);
@@ -64,7 +59,6 @@ class App
         }
     }
 
-    protected function before($route, $response, $request) { }
     protected function configure() { }
     protected function initialize() {  }
     protected function handleServerError(\K\ResponseWriterInterface $w, \Throwable $e) { }
