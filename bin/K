@@ -67,7 +67,7 @@ if ($cmd === 'migrate') {
 }
 
 if ($cmd === 'worker') {
-    require_once __DIR__ . '/../scripts/worker.php';
+    \K\App::run(new \K\WorkerContext());
     exit(0);
 }
 
