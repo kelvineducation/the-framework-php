@@ -251,6 +251,15 @@ SQL;
     }
 
     /**
+     * @param string $field
+     * @return bool
+     */
+    protected function isChanged($field)
+    {
+        return !empty($this->changed[$field]);
+    }
+
+    /**
      * @throws DbException
      */
     private function update()
