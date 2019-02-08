@@ -113,7 +113,7 @@ class AssetBuster
         $relative_target_pathname = '../../' . $dirname . '/' . $file->getFilename();
 
         $this->assets[$url] = [
-            'mtime' => $file->getMTime(),
+            'sha'   => $sha,
             'url'   => $link_url,
         ];
 
@@ -133,8 +133,9 @@ class AssetBuster
 
     private function assetHasChanged(string $url, \SplFileInfo $file): bool
     {
+        $sha = sha1_file($file->getPathname());
         if (isset($this->assets[$url])
-            && $this->assets[$url]['mtime'] == $file->getMTime()
+            && $this->assets[$url]['sha'] == $sha
         ) {
             return false;
         }
