@@ -18,6 +18,28 @@ services:
       - 6379
     volumes:
       - ./data/redis:/data
+
   php-fpm:
     depends_on:
       - postgres
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: unless-stopped
+    command: ["/app/scripts/repeat", "/app/bin/K", "worker"]
+    volumes:
+      - .:/app
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    environment:
+      - APP_ENV
+      - DATABASE_URL
+      - GOOGLE_ID
+      - GOOGLE_SECRET
+      - LOGIN_PROXY
+      - POSTMARK_API_KEY
+      - REDIS_URL
+      - HONEYBADGER_API_KEY
+      - POPUP_URL
+      - MAX_ITERATIONS
