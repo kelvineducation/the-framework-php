@@ -268,7 +268,7 @@ SQL;
             return $this->conn;
         }
 
-        $this->conn = pg_connect(self::pgConnStr($this->url));
+        $this->conn = pg_connect(self::pgConnStr($this->url), PGSQL_CONNECT_FORCE_NEW);
 
         if (!$this->conn) {
             throw new DbException("Failed to connect to postgres");
