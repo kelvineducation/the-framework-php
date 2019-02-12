@@ -27,6 +27,11 @@ class Request implements RequestInterface, Form\RequestInterface
             ?? $params['GET'][$key] ?? $default;
     }
 
+    public function getJson()
+    {
+        return $this->getParams()['JSON'] ?? null;
+    }
+
     /**
      * @param string $key
      * @param string|null $default
