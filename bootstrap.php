@@ -55,11 +55,7 @@ option('honeybadger', service(function() {
 }));
 
 option('postmark', service(function () {
-    return new Postmark\PostmarkClient(getenv('POSTMARK_API_KEY'));
-}));
-
-option('postmark-sandbox', service(function () {
-    return new Postmark\PostmarkClient('POSTMARK_API_TEST');
+    return new \K\Integrations\Postmark(getenv('POSTMARK_API_KEY'));
 }));
 
 Model::setDb(function() {
