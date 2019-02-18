@@ -113,6 +113,15 @@ class Form
         return $field;
     }
 
+    public function addTextarea(string $name, string $value = '', string $label = '')
+    {
+        $field = new Field($name, 'textarea', $label);
+        $field->setAttribute('class', 'form-control');
+        $field->setValue($this->request->getParam($name, $value));
+        $this->addField($field);
+        return $field;
+    }
+
     public function wasSubmitted(): bool
     {
         return ($this->getData(self::FIELD_SUBMITTED) === $this->name);
