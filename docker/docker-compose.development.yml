@@ -43,3 +43,4 @@ services:
       - HONEYBADGER_API_KEY
       - POPUP_URL
       - MAX_ITERATIONS
+      - DEV_EMAIL
