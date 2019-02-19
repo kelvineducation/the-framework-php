@@ -20,8 +20,6 @@ class HttpContext extends AppContext
 
     public function configure(App $app)
     {
-        option('views_dir', option('root_dir') . '/views');
-
         $this->child_context->configure($app);
 
         if ($session = option('session')) {
