@@ -14,7 +14,7 @@ class WebContext extends AppContext
         ini_set('session.save_handler', option('session_save_handler'));
         ini_set('session.save_path', option('session_save_path'));
         option('session', [
-            'lifetime' => strtotime("20 minutes") - time(),
+            'lifetime' => strtotime("2 hours") - time(),
             'path'     => '/',
             'domain'   => '',
             'secure'   => true,
