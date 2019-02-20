@@ -182,11 +182,11 @@ function load_env()
  */
 function url($path = '')
 {
-    if (getenv('HEROKU_APP_NAME')) {
-        return 'https://' . getenv('HEROKU_APP_NAME') . '.herokuapp.com' . $path;
+    if (getenv('BASE_URL')) {
+        return getenv('BASE_URL') . $path;
     }
 
-    return getenv('BASE_URL') . $path;
+    return 'https://' . getenv('HEROKU_APP_NAME') . '.herokuapp.com' . $path;
 }
 
 /**
