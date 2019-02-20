@@ -34,6 +34,7 @@ services:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     environment:
       - APP_ENV
+      - BASE_URL
       - DATABASE_URL
       - GOOGLE_ID
       - GOOGLE_SECRET
