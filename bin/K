@@ -72,7 +72,7 @@ if ($cmd === 'worker') {
 }
 
 if ($cmd === 'scheduler') {
-    require_once __DIR__ . '/../scripts/scheduler.php';
+    \K\App::run(new \K\SchedulerContext());
     exit(0);
 }
 
