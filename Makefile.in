@@ -29,7 +29,6 @@ php-cli:
 
 watch:
 	rm -rf asset_manifest.json
-	mkdir -p public/css public/asset_links/css public/asset_links/js
 	npm run prod
 	npm run watch
 

@@ -10,7 +10,6 @@
     ],
     "scripts": {
       "compile": [
-        "mkdir -p public/css public/asset_links/css public/asset_links/js",
         "npm run prod",
         "./bin/K assets:compile"
       ]
