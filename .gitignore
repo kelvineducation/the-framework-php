@@ -9,3 +9,6 @@
 .env.php
 tags
 /node_modules/
+/asset_manifest.json
+/public/css
+/public/asset_links

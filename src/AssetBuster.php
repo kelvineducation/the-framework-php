@@ -62,7 +62,7 @@ class AssetBuster
         return json_decode($manifest_json, true);
     }
 
-    private function syncManifest()
+    public function syncManifest()
     {
         foreach ($this->options['dirnames'] as $dirname) {
             $files = new DirectoryIterator($this->public_path . '/' . $dirname);

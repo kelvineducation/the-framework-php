@@ -8,6 +8,13 @@
             "email": "rankin.zachary@gmail.com"
         }
     ],
+    "scripts": {
+      "compile": [
+        "mkdir -p public/css public/asset_links/css public/asset_links/js",
+        "npm run prod",
+        "./bin/K assets:compile"
+      ]
+    },
     "require": {
         "php": "~7.3.0",
         "ext-json": "*",
