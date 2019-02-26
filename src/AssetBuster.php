@@ -62,7 +62,7 @@ class AssetBuster
         return json_decode($manifest_json, true);
     }
 
-    private function syncManifest()
+    public function syncManifest()
     {
         foreach ($this->options['dirnames'] as $dirname) {
             $files = new DirectoryIterator($this->public_path . '/' . $dirname);
@@ -88,7 +88,7 @@ class AssetBuster
     {
         // Note: This doesn't work with nested asset directories which is okay
         // because we don't need that complication right now
-        if (!$file->isFile()) {
+        if (!$file->isFile() || $file->getFilename() === '.keep') {
             return;
         }
 

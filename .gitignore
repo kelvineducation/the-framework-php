@@ -9,3 +9,10 @@
 .env.php
 tags
 /node_modules/
+/asset_manifest.json
+/public/css/*
+/public/asset_links/css/*
+/public/asset_links/js/*
+!/public/css/.keep
+!/public/asset_links/css/.keep
+!/public/asset_links/js/.keep

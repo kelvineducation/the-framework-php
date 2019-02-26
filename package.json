@@ -4,7 +4,8 @@
     "watch": "node-sass --watch --recursive --output-style compressed --output ./public/css assets/sass",
     "prod": "node-sass --output-style compressed --output ./public/css assets/sass"
   },
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
     "bootstrap": "^4.2.1",
     "node-sass": "^4.11.0"
   }
