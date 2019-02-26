@@ -88,7 +88,7 @@ class AssetBuster
     {
         // Note: This doesn't work with nested asset directories which is okay
         // because we don't need that complication right now
-        if (!$file->isFile()) {
+        if (!$file->isFile() || $file->getFilename() === '.keep') {
             return;
         }
 
