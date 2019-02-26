@@ -108,6 +108,9 @@ class AssetBuster
             ));
         }
         $link_filename = $sha . '_' . $file->getFilename();
+        if ($file->getExtension() === 'map') {
+            $link_filename = $file->getFilename();
+        }
         $link_url = '/asset_links/' . $dirname . '/' . $link_filename;
         $link_pathname = $this->public_path . '/' . $link_url;
         $relative_target_pathname = '../../' . $dirname . '/' . $file->getFilename();

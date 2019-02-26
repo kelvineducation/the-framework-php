@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "watch": "node-sass --watch --recursive --output-style compressed --output ./public/css assets/sass",
-    "prod": "node-sass --output-style compressed --output ./public/css assets/sass"
+    "watch": "node-sass --watch --recursive --output-style compressed --source-map ./public/css --output ./public/css assets/sass",
+    "prod": "node-sass --output-style compressed --source-map ./public/css --output ./public/css assets/sass"
   },
   "devDependencies": {},
   "dependencies": {
