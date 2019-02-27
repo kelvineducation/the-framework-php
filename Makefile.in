@@ -1,6 +1,8 @@
 export UID=$(shell id -u)
 export GID=$(shell id -g)
 
+.PHONY: tests
+
 install: build-compose-file ${INSTALL_TARGET}
 
 install-docker:
@@ -10,6 +12,7 @@ install-docker:
 	docker-compose exec php-fpm \
 		/usr/local/bin/wait-for postgres:5432 -t 30 \
 		-- ./bin/K migrate:setup
+	npm run prod
 
 install-buoy: install-dev
 
@@ -18,8 +21,20 @@ install-dev: install-docker migrate
 migrate:
 	docker-compose exec php-fpm ./bin/K migrate
 
+tests:
+	docker-compose exec php-fpm ./bin/tests
+
 php-cli:
 	docker-compose exec php-fpm /bin/sh
+
+watch:
+	rm -rf asset_manifest.json
+	npm run prod
+	npm run watch
+
+build:
+	npm run prod
+	docker-compose exec php-fpm ./bin/K assets:compile
 
 build-compose-file:
 	rm -f docker-stack.yml docker-compose.yml

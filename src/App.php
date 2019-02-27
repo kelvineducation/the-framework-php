@@ -23,6 +23,7 @@ class App
     {
         option('env', ENV_PRODUCTION);
         option('root_dir', dirname(__DIR__));
+        option('views_dir', option('root_dir') . '/views');
 
         $app = new self();
 

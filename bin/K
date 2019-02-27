@@ -66,13 +66,18 @@ if ($cmd === 'migrate') {
     exit(0);
 }
 
+if ($cmd === 'assets:compile') {
+    \K\option('asset_buster')->syncManifest();
+    exit(0);
+}
+
 if ($cmd === 'worker') {
     \K\App::run(new \K\WorkerContext());
     exit(0);
 }
 
 if ($cmd === 'scheduler') {
-    require_once __DIR__ . '/../scripts/scheduler.php';
+    \K\App::run(new \K\SchedulerContext());
     exit(0);
 }
 

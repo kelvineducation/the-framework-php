@@ -143,6 +143,21 @@ class Field
                     );
                 }, array_keys($this->options), $this->options))
             );
+        } elseif ($this->type === 'textarea') {
+            $default_attributes = [
+                'id'    => $this->getId(),
+                'name'  => $this->getName(),
+            ];
+            if ($this->required === true) {
+                $default_attributes['required'] = '';
+            }
+            if ($this->is_disabled === true) {
+                $default_attributes['disabled'] = '';
+            }
+            $attributes = array_merge($default_attributes, $this->attributes);
+
+            return sprintf("<textarea %s>%s</textarea>",
+                $this->htmlify($attributes), $this->value);
         }
 
         return '';

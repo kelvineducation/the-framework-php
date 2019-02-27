@@ -24,6 +24,7 @@ services:
       - 9000
     environment:
       - APP_ENV
+      - BASE_URL
       - DATABASE_URL
       - GOOGLE_ID
       - GOOGLE_SECRET
