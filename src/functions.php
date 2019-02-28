@@ -125,43 +125,6 @@ function db()
     return option('db');
 }
 
-/**
- * @param ResponseWriterInterface $w
- * @param RequestInterface $request
- * @return bool|User
- * @throws DbException
- */
-function require_login(ResponseWriterInterface $w, RequestInterface $request)
-{
-    $user_id = $request->getSessionParam('user_id');
-    if (!$user_id) {
-        $q = http_build_query(['prev_uri' => $_SERVER['REQUEST_URI']]);
-        redirect($w, $request, '/login?' . $q);
-        return false;
-    }
-    option('honeybadger')->context('user_id', $user_id);
-    $user = User::find($user_id);
-    return $user;
-}
-
-/**
- * @param ResponseWriterInterface $w
- * @param RequestInterface $request
- * @return bool|Organization
- * @throws DbException
- */
-function require_organization(ResponseWriterInterface $w, RequestInterface $request)
-{
-    $organization_id = $request->getSessionParam('organization_id');
-    if (!$organization_id) {
-        redirect($w, $request, '/organizations');
-        return false;
-    }
-    option('honeybadger')->context('organization_id', $organization_id);
-    $organization = Organization::find($organization_id);
-    return $organization;
-}
-
 function load_env()
 {
     $env_file = __DIR__ . '/../.env.php';
