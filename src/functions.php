@@ -301,6 +301,7 @@ function path(string $class, array $params = [], string $default = 'HomePage', s
 
 function respondent_html_helper($respondent_type)
 {
+    $respondent = "-";
     switch ($respondent_type) {
     case 'students':
         $respondent = "Students";
