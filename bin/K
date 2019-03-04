@@ -6,6 +6,8 @@ require_once __DIR__ . '/../bootstrap.php';
 use function K\db;
 use K\Migration;
 
+$original_argv = $argv;
+
 $script = array_shift($argv);
 $cmd = array_shift($argv);
 
@@ -71,17 +73,4 @@ if ($cmd === 'assets:compile') {
     exit(0);
 }
 
-if ($cmd === 'worker') {
-    \K\App::run(new \K\WorkerContext());
-    exit(0);
-}
-
-if ($cmd === 'scheduler') {
-    \K\App::run(new \K\SchedulerContext());
-    exit(0);
-}
-
-echo <<<HELP
-bin/K {{then read the source}}
-HELP;
-exit(1);
+\K\App::run(\K\CliContext::init($original_argv));
