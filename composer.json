@@ -1,33 +1,30 @@
 {
-    "name": "kelvineducation/pulse",
-    "description": "Measure and improve sel, school climate and engagement",
-    "type": "project",
+    "name": "kelvineducation/the-framework-php",
+    "description": "The Framework",
+    "type": "library",
+    "license": "AGPL-3.0",
     "authors": [
         {
             "name": "Zachary Rankin",
-            "email": "rankin.zachary@gmail.com"
+            "email": "zach@kelvin.education"
+        },
+        {
+            "name": "Matthew Light",
+            "email": "matt@kelvin.education"
         }
     ],
-    "scripts": {
-      "compile": [
-        "npm run prod",
-        "./bin/K assets:compile"
-      ]
+    "support": {
+      "email": "hello@kelvin.education"
     },
+    "scripts": {
+      "compile": "./bin/K assets:compile"
+    },
+    "bin": ["bin/K"],
     "require": {
         "php": "~7.3.0",
         "ext-json": "*",
         "ext-pgsql": "*",
-        "ext-redis": "*",
-        "nikic/fast-route": "^1.3",
-        "league/oauth2-google": "^2.2",
-        "wildbit/postmark-php": "^2.6",
-        "honeybadger-io/honeybadger-php": "^1.2",
-        "fzaninotto/faker": "^1.8",
-        "jdenticon/jdenticon": "^0.10.0"
-    },
-    "require-dev": {
-        "heroku/heroku-buildpack-php": "*"
+        "ext-redis": "*"
     },
     "autoload": {
         "files": ["src/functions.php"],
