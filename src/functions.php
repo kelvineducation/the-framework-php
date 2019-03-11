@@ -262,30 +262,6 @@ function path(string $class, array $params = [], string $default = 'HomePage', s
     }, $path);
 }
 
-function respondent_html_helper($respondent_type)
-{
-    $respondent = "-";
-    switch ($respondent_type) {
-    case 'students':
-        $respondent = "Students";
-        break;
-    case 'parents':
-        $respondent = "Community";
-        break;
-    case 'staff':
-        $respondent = "Staff";
-        break;
-    }
-
-    $html = <<<HTML
-<div class="respondent respondent-{$respondent_type}">
-  {$respondent}
-</div>
-HTML;
-
-    return $html;
-}
-
 function asset_url(string $asset_url)
 {
     return option('asset_buster')->getAssetUrl($asset_url);
