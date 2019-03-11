@@ -4,10 +4,5 @@ namespace K\Cli;
 
 abstract class Cli
 {
-    public static function init(array $args = null)
-    {
-        return new static($args);
-    }
-
-    public function run() {return 0;}
+    public abstract function run(array $args);
 }

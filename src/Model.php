@@ -93,6 +93,10 @@ class Model
             return $identity_map[$class_name][$id];
         }
 
+        if(empty($id)) {
+            return null;
+        }
+
         $sql = <<<SQL
 SELECT *
 FROM %s
