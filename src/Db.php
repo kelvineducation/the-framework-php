@@ -97,6 +97,19 @@ class Db
     }
 
     /**
+     * @param string $sql
+     * @param array $params
+     * @return array
+     * @throws DbException
+     */
+    public function fetchList(string $sql, array $params = []): array
+    {
+        $row = $this->query($sql, $params)->fetchList();
+
+        return $row;
+    }
+
+    /**
      * @param string $table
      * @param array $data
      * @param string $returning

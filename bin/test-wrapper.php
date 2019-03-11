@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../tests/bootstrap.php';
 
 $script = array_shift($argv);
 $test_file = array_shift($argv);

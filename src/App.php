@@ -21,12 +21,9 @@ class App
 
     public static function run(AppContext $app_context)
     {
-        option('env', ENV_PRODUCTION);
-        option('root_dir', dirname(__DIR__));
-        option('views_dir', option('root_dir') . '/views');
-
         $app = new self();
 
+        self::setErrorReportingLevel();
         set_error_handler([__CLASS__, 'errorException'], E_ALL);
         set_exception_handler([__CLASS__, 'errorDispatcher']);
         register_shutdown_function([__CLASS__, 'handleFatal']);
@@ -51,7 +48,7 @@ class App
         string $errfile,
         string $errline
     ) {
-        if (error_reporting() === 0) {
+        if (!(error_reporting() & $errno)) {
             return;
         }
         throw new \ErrorException($errstr, $errno, $errno, $errfile, $errline);
@@ -85,5 +82,15 @@ class App
             $err['line']
         );
         self::errorDispatcher($e);
+    }
+
+    private static function setErrorReportingLevel()
+    {
+        if (getenv('APP_ENV') === ENV_PRODUCTION) {
+            error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
+            return;
+        }
+
+        error_reporting(E_ALL);
     }
 }
