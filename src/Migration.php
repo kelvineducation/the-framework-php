@@ -35,6 +35,10 @@ SQL;
      */
     public static function create(string $name): string
     {
+        if (empty($name)) {
+            return '';
+        }
+
         $filename = date('YmdHis') . '_' . $name . '.php';
         $tmpl = <<<'TMPL'
 <?php
@@ -59,7 +63,7 @@ SQL;
 db()->query($sql);
 
 TMPL;
-        $full_filename = __DIR__ . '/../migrations/' . $filename;
+        $full_filename = self::getMigrationsDir() . "/$filename";
 
         $result = file_put_contents($full_filename, $tmpl);
 
@@ -67,7 +71,7 @@ TMPL;
             return '';
         }
 
-        return $filename;
+        return $full_filename;
     }
 
     public static function runAll(Closure $run, Closure $done)
@@ -108,7 +112,7 @@ TMPL;
 
     private static function getMigrationsDir(): string
     {
-        return __DIR__ . '/../migrations';
+        return option('root_dir') . '/migrations';
     }
 
     private static function getNextBatchNumber(Db $db): int
