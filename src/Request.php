@@ -56,7 +56,7 @@ class Request implements RequestInterface, Form\RequestInterface
         $params['GET'] =& $_GET;
         $params['POST'] =& $_POST;
         if ($this->getMethod() === 'POST'
-            && $this->getHeader('CONTENT_TYPE') === 'application/json'
+            && strpos($this->getHeader('CONTENT_TYPE'), 'application/json') === 0
         ) {
             $params['JSON'] = json_decode(file_get_contents('php://input'), true);
         }
