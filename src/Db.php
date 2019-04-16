@@ -310,7 +310,7 @@ SQL;
      * @param int $conn_timeout
      * @return string
      */
-    private static function pgConnStr(string $url, int $conn_timeout = 2): string
+    private static function pgConnStr(string $url, int $conn_timeout = 10): string
     {
         $host = parse_url($url, PHP_URL_HOST);
         $port = parse_url($url, PHP_URL_PORT) ?: 5432;
