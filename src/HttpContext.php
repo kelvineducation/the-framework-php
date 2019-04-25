@@ -2,8 +2,6 @@
 
 namespace K;
 
-use function K\{option};
-
 class HttpContext extends AppContext
 {
     /**

@@ -2,8 +2,8 @@
 
 namespace K\Cli;
 
-use function K\db;
 use K\Migration;
+use function K\db;
 
 class MigrateCli extends Cli
 {

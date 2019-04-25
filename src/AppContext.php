@@ -2,8 +2,6 @@
 
 namespace K;
 
-use function K\{option};
-
 class AppContext
 {
     public function __construct() { }

@@ -2,7 +2,7 @@
 
 namespace K;
 
-use K\Form\{FormException, Field, RequestInterface};
+use K\Form\{Field, FormException, RequestInterface};
 
 class Form
 {
