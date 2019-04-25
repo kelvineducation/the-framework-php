@@ -1,6 +1,6 @@
 <?php
 
-namespace K;
+namespace The;
 
 class CliContext extends AppContext
 {
@@ -59,7 +59,7 @@ class CliContext extends AppContext
     private function help()
     {
 echo <<<HELP
-bin/K {{then read the source}}\n
+bin/The {{then read the source}}\n
 HELP;
     }
 }

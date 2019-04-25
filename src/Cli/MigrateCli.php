@@ -1,15 +1,15 @@
 <?php
 
-namespace K\Cli;
+namespace The\Cli;
 
-use K\Migration;
-use function K\db;
+use The\Migration;
+use function The\db;
 
 class MigrateCli extends Cli
 {
     public function run(array $args)
     {
-        \K\Model::setDb(function () {
+        \The\Model::setDb(function () {
             return db();
         });
         Migration::runAll(

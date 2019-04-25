@@ -1,6 +1,6 @@
 <?php
 
-namespace K;
+namespace The;
 
 class HttpContext extends AppContext
 {
@@ -31,8 +31,8 @@ class HttpContext extends AppContext
             $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             [$page_class, $vars] = page($path, 'Home', '\K\Pages\\');
 
-            $response = new \K\Response();
-            $request = new \K\Request();
+            $response = new \The\Response();
+            $request = new \The\Request();
             if (!class_exists($page_class)) {
                 $this->handleNotFound($response);
                 $response->send();
@@ -49,21 +49,21 @@ class HttpContext extends AppContext
 
     public function defaultErrorHandler(\Throwable $e)
     {
-        $w = new \K\Response();
+        $w = new \The\Response();
         $w->withStatus(500);
 
         $this->handleServerError($w, $e);
         $w->send();
     }
 
-    private function handleServerError(\K\ResponseWriterInterface $w, \Throwable $e)
+    private function handleServerError(\The\ResponseWriterInterface $w, \Throwable $e)
     {
         if (method_exists($this->child_context, 'handleServerError')) {
             $this->child_context->handleServerError($w, $e);
         }
     }
 
-    private function handleNotFound(\K\ResponseWriterInterface $w)
+    private function handleNotFound(\The\ResponseWriterInterface $w)
     {
         if (method_exists($this->child_context, 'handleNotFound')) {
             $this->child_context->handleNotFound($w);

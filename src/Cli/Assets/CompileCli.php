@@ -1,14 +1,14 @@
 <?php
 
-namespace K\Cli\Assets;
+namespace The\Cli\Assets;
 
-use K\Cli\Cli;
+use The\Cli\Cli;
 
 class CompileCli extends Cli
 {
     public function run(array $args)
     {
-        \K\option('asset_buster')->syncManifest();
+        \The\option('asset_buster')->syncManifest();
 
         return 0;
     }

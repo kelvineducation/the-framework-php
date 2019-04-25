@@ -1,9 +1,9 @@
 <?php
 
 test("writing json response", function ($t) {
-    $writer = new \K\Tests\ResponseWriterStub();
+    $writer = new \The\Tests\ResponseWriterStub();
 
-    \K\json($writer, ['success' => true]);
+    \The\json($writer, ['success' => true]);
     
     $t->equals(
         $writer->headers['Content-Type'],
@@ -14,10 +14,10 @@ test("writing json response", function ($t) {
 });
 
 test("writing json error response", function ($t) {
-    $writer = new \K\Tests\ResponseWriterStub();
+    $writer = new \The\Tests\ResponseWriterStub();
     
     $status = 500;
-    \K\json($writer, [], $status);
+    \The\json($writer, [], $status);
     
     $t->equals($writer->status, $status, sprintf("status code is set to %s", $status));
 });

@@ -1,9 +1,9 @@
 <?php
 
-use function K\{html};
+use function The\{html};
 
 test(function ($t) {
-    $writer = new \K\Tests\ResponseWriterStub();
+    $writer = new \The\Tests\ResponseWriterStub();
     html(
         $writer,
         __DIR__ . '/html_example.phtml',

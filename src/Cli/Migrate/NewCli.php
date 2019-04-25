@@ -1,9 +1,9 @@
 <?php
 
-namespace K\Cli\Migrate;
+namespace The\Cli\Migrate;
 
-use K\Cli\Cli;
-use K\Migration;
+use The\Cli\Cli;
+use The\Migration;
 
 class NewCli extends Cli
 {

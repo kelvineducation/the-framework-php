@@ -1,9 +1,9 @@
 <?php
 
-namespace K\Tests;
+namespace The\Tests;
 
-use K\Form\RequestInterface as FormRequestInterface;
-use K\RequestInterface;
+use The\Form\RequestInterface as FormRequestInterface;
+use The\RequestInterface;
 
 class RequestStub implements RequestInterface, FormRequestInterface
 {

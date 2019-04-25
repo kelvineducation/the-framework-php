@@ -1,6 +1,6 @@
 <?php
 
-use function \K\{db};
+use function \The\{db};
 
 test("quoting postgres column names", function ($t) {
     $t->equals(db()->quoteCol('id'), '"id"', "quote column with double quotes");
@@ -29,5 +29,5 @@ test("quoting sql values", function ($t) {
     $t->equals(db()->quote(null), "NULL", "doesn't quote null");
     $t->equals(db()->quote(false), "FALSE", "doesn't quote boolean");
     $t->equals(db()->quote(['a', 'b']), "ARRAY['a', 'b']", "converts array");
-    $t->equals(db()->quote(new K\DbExpr('now()')), "now()", "ignores expressions");
+    $t->equals(db()->quote(new The\DbExpr('now()')), "now()", "ignores expressions");
 });

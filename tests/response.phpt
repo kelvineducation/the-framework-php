@@ -13,7 +13,7 @@ test("outputting a response", function ($t) {
         },
     ];
 
-    $response = new \K\Response();
+    $response = new \The\Response();
     $response->withStatus(200);
     $response->withHeader('Content-Type', 'application/json');
     $response->write(json_encode(['a' => 'apple']));

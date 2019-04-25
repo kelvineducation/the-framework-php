@@ -1,6 +1,6 @@
 <?php
 
-namespace K\Tests;
+namespace The\Tests;
 
 use Throwable;
 

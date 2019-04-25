@@ -1,6 +1,6 @@
 <?php
 
-use function \K\{db};
+use function \The\{db};
 
 $sql = <<<SQL
 CREATE TEMPORARY TABLE t AS

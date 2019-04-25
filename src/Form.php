@@ -1,8 +1,8 @@
 <?php
 
-namespace K;
+namespace The;
 
-use K\Form\{Field, FormException, RequestInterface};
+use The\Form\{Field, FormException, RequestInterface};
 
 class Form
 {

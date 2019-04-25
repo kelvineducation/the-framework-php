@@ -1,7 +1,7 @@
 <?php
 
-use function \K\{db};
-use \K\{Model};
+use function \The\{db};
+use \The\{Model};
 
 $sql = <<<SQL
 CREATE TEMPORARY TABLE t (

@@ -1,6 +1,6 @@
 <?php 
 
-use function \K\{db};
+use function \The\{db};
 
 db()->query("CREATE TEMPORARY TABLE t (id serial, letter varchar)");
 

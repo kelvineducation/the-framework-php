@@ -1,6 +1,6 @@
 <?php
 
-namespace K;
+namespace The;
 
 class Response implements ResponseWriterInterface
 {

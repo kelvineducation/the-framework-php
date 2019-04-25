@@ -1,6 +1,6 @@
 <?php
 
-namespace K;
+namespace The;
 
 use Closure;
 
@@ -43,7 +43,7 @@ SQL;
         $tmpl = <<<'TMPL'
 <?php
 
-use function K\db;
+use function The\db;
 
 // COMMENT
 

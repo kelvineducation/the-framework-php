@@ -1,5 +1,8 @@
 <?php
 
+use The\Tests\ErrorHandler;
+use The\Tests\Test;
+
 require_once __DIR__ . '/../tests/bootstrap.php';
 
 $script = array_shift($argv);
@@ -10,7 +13,7 @@ if (!file_exists($test_file)) {
     exit(1);
 }
 
-$err = new \K\Tests\ErrorHandler();
+$err = new ErrorHandler();
 $err->register();
 
 echo sprintf("# %s\n", $test_file);
@@ -37,7 +40,7 @@ function test()
     if ($name !== '') {
         echo "# {$name}\n";
     }
-    $t = new \K\Tests\Test(
+    $t = new Test(
         function(bool $passed, string $message = '', string $more = '') use (&$failed) {
             $message = ($message ? "- {$message}" : '');
             if ($passed) {
