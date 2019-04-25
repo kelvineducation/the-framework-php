@@ -2,7 +2,10 @@
 
 namespace K\Tests;
 
-class RequestStub implements \K\RequestInterface
+use K\Form\RequestInterface as FormRequestInterface;
+use K\RequestInterface;
+
+class RequestStub implements RequestInterface, FormRequestInterface
 {
     public $params = [];
     public $session_params = [];
