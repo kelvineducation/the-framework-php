@@ -29,7 +29,7 @@ class HttpContext extends AppContext
     {
         try {
             $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-            [$page_class, $vars] = page($path, 'Home', '\K\Pages\\');
+            [$page_class, $vars] = page($path, 'Home', '\App\Pages\\');
 
             $response = new \The\Response();
             $request = new \The\Request();

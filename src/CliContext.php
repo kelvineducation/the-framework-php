@@ -37,8 +37,8 @@ class CliContext extends AppContext
         }
 
         $class_name = strtr(ucwords($command_name, ':-'), [':' => '\\', '-' => '']);
-        $command_class = sprintf('\K\Cli\%sCli', $class_name);
-        if (!class_exists($command_class)) {
+        $command_class = $this->findCommandClass($class_name);
+        if (!$command_class) {
             echo "Unknown command '{$class_name}'\n\n";
             $this->help();
             exit(1);
@@ -61,5 +61,15 @@ class CliContext extends AppContext
 echo <<<HELP
 bin/The {{then read the source}}\n
 HELP;
+    }
+
+    private function findCommandClass(string $class_name)
+    {
+        foreach (['\App\Cli\%sCli', '\The\Cli\%sCli'] as $format) {
+            $command_class = sprintf($format, $class_name);
+            if (class_exists($command_class)) {
+                return $command_class;
+            }
+        }
     }
 }
