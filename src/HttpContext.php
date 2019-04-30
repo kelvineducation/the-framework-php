@@ -2,6 +2,8 @@
 
 namespace The;
 
+use Throwable;
+
 class HttpContext extends AppContext
 {
     /**
@@ -31,8 +33,8 @@ class HttpContext extends AppContext
             $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             [$page_class, $vars] = page($path, 'Home', '\App\Pages\\');
 
-            $response = new \The\Response();
-            $request = new \The\Request();
+            $response = new Response();
+            $request = new Request();
             if (!class_exists($page_class)) {
                 $this->handleNotFound($response);
                 $response->send();
@@ -42,28 +44,28 @@ class HttpContext extends AppContext
             $page = call_user_func(["$page_class", 'factory']);
             $page->__invoke($response, $request, $vars);
             $response->send();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->defaultErrorHandler($e);
         }
     }
 
-    public function defaultErrorHandler(\Throwable $e)
+    public function defaultErrorHandler(Throwable $e)
     {
-        $w = new \The\Response();
+        $w = new Response();
         $w->withStatus(500);
 
         $this->handleServerError($w, $e);
         $w->send();
     }
 
-    private function handleServerError(\The\ResponseWriterInterface $w, \Throwable $e)
+    private function handleServerError(ResponseWriterInterface $w, Throwable $e)
     {
         if (method_exists($this->child_context, 'handleServerError')) {
             $this->child_context->handleServerError($w, $e);
         }
     }
 
-    private function handleNotFound(\The\ResponseWriterInterface $w)
+    private function handleNotFound(ResponseWriterInterface $w)
     {
         if (method_exists($this->child_context, 'handleNotFound')) {
             $this->child_context->handleNotFound($w);
