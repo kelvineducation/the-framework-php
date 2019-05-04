@@ -5,6 +5,11 @@ namespace The;
 class CliContext extends AppContext
 {
     /**
+     * string $namespace
+     */
+    private $namespace;
+
+    /**
      * @var array $argv
      */
     private $argv;
@@ -12,16 +17,17 @@ class CliContext extends AppContext
     /**
      * @param array $argv
      */
-    public static function init(array $argv)
+    public static function init(string $namespace, array $argv)
     {
-        return new CliContext($argv);
+        return new CliContext($namespace, $argv);
     }
 
     /**
      * @param array $argv
      */
-    public function __construct(array $argv)
+    public function __construct(string $namespace, array $argv)
     {
+        $this->namespace = $namespace;
         $this->argv = $argv;
     }
 
@@ -32,15 +38,15 @@ class CliContext extends AppContext
         $command_name = array_shift($argv);
 
         if (!$command_name) {
-            $this->help();
+            $this->help($script);
             exit(1);
         }
 
         $class_name = strtr(ucwords($command_name, ':-'), [':' => '\\', '-' => '']);
-        $command_class = sprintf('\K\Cli\%sCli', $class_name);
+        $command_class = sprintf('\%s\Cli\%sCli', $this->namespace, $class_name);
         if (!class_exists($command_class)) {
             echo "Unknown command '{$class_name}'\n\n";
-            $this->help();
+            $this->help($script);
             exit(1);
         }
 
@@ -56,10 +62,10 @@ class CliContext extends AppContext
         echo "{$e}\n";
     }
 
-    private function help()
+    private function help($script)
     {
 echo <<<HELP
-bin/The {{then read the source}}\n
+{$script} {{then read the source}}\n
 HELP;
     }
 }
