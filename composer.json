@@ -19,7 +19,7 @@
     "scripts": {
       "compile": "./bin/the assets:compile"
     },
-    "bin": ["bin/K"],
+    "bin": ["bin/the"],
     "require": {
         "php": "~7.3.0",
         "ext-json": "*",
