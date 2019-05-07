@@ -17,6 +17,8 @@ class Field
     private $invalid_feedback = '';
     private $help_text = '';
 
+    private $is_multiple = false;
+
     public function __construct(string $name, string $type, string $label = '')
     {
         $this->name = $name;
@@ -52,6 +54,11 @@ class Field
     public function makePrimary()
     {
         $this->addClass("btn-primary");
+    }
+
+    public function setMultiple(bool $is_multiple)
+    {
+        $this->is_multiple = $is_multiple;
     }
 
     public function setAttribute(string $attribute, string $value): Field
@@ -118,13 +125,16 @@ class Field
         } elseif ($this->type === 'select') {
             $default_attributes = [
                 'id'    => $this->getId(),
-                'name'  => $this->getName(),
+                'name'  => $this->getName() . ($this->is_multiple ? '[]' : ''),
             ];
             if ($this->required === true) {
                 $default_attributes['required'] = '';
             }
             if ($this->is_disabled === true) {
                 $default_attributes['disabled'] = '';
+            }
+            if ($this->is_multiple) {
+                $default_attributes['multiple'] = '';
             }
             $attributes = array_merge($default_attributes, $this->attributes);
 
