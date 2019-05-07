@@ -56,9 +56,9 @@ class Field
         $this->addClass("btn-primary");
     }
 
-    public function setMultiple(bool $is_multiple)
+    public function setMultiple()
     {
-        $this->is_multiple = $is_multiple;
+        $this->is_multiple = true;
     }
 
     public function setAttribute(string $attribute, string $value): Field
