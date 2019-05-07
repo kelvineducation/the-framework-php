@@ -143,6 +143,34 @@ class Field
                     );
                 }, array_keys($this->options), $this->options))
             );
+        }  elseif ($this->type === 'radios' || $this->type === 'checkboxes') {
+            $attributes = $this->attributes;
+            $type = ($this->type === 'checkboxes' ? 'checkbox' : 'radio');
+
+            return implode("\n", array_map(function ($val, $desc) use ($type) {
+                $container_attrs = ['class' => "custom-control custom-{$type}"];
+                $input_attrs = [
+                    'name'  => $this->name . ($this->type === 'checkboxes' ? '[]' : ''),
+                    'type'  => $type,
+                    'value' => $val,
+                    'class' => 'custom-control-input',
+                    'id'    => "{$this->name}-{$val}"
+                ];
+                $label_attrs = [
+                    'class' => 'custom-control-label',
+                    'for'   => "{$this->name}-{$val}"
+                ];
+                if (array_key_exists($val, $this->selected)) {
+                    $input_attrs['checked'] = 'checked';
+                }
+                return sprintf(
+                    "<div %s>\n<input %s>\n<label %s>%s</label></div>\n",
+                    $this->htmlify($container_attrs),
+                    $this->htmlify($input_attrs),
+                    $this->htmlify($label_attrs),
+                    $desc
+                );
+            }, array_keys($this->options), $this->options));
         } elseif ($this->type === 'textarea') {
             $default_attributes = [
                 'id'    => $this->getId(),
