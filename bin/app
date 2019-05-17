@@ -7,4 +7,4 @@ if (file_exists(__DIR__ . '/../../../bootstrap.php')) {
     require_once __DIR__ . '/../bootstrap.php';
 }
 
-\The\App::run(\The\CliContext::init('The', $argv));
+\The\App::run(\The\CliContext::init('App', $argv));
