@@ -154,7 +154,6 @@ class Field
                 }, array_keys($this->options), $this->options))
             );
         }  elseif ($this->type === 'radios' || $this->type === 'checkboxes') {
-            $attributes = $this->attributes;
             $type = ($this->type === 'checkboxes' ? 'checkbox' : 'radio');
 
             return implode("\n", array_map(function ($val, $desc) use ($type) {
@@ -172,6 +171,14 @@ class Field
                 ];
                 if (array_key_exists($val, $this->selected)) {
                     $input_attrs['checked'] = 'checked';
+                }
+                if ($this->is_disabled === true) {
+                    $input_attrs['disabled'] = '';
+                }
+                foreach (['data-action', 'data-target'] as $attr) {
+                    if (array_key_exists($attr, $this->attributes)) {
+                        $input_attrs[$attr] = $this->attributes[$attr];
+                    }
                 }
                 return sprintf(
                     "<div %s>\n<input %s>\n<label %s>%s</label></div>\n",
