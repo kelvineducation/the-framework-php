@@ -17,6 +17,8 @@ class Field
     private $invalid_feedback = '';
     private $help_text = '';
 
+    private $is_multiple = false;
+
     public function __construct(string $name, string $type, string $label = '')
     {
         $this->name = $name;
@@ -52,6 +54,11 @@ class Field
     public function makePrimary()
     {
         $this->addClass("btn-primary");
+    }
+
+    public function setMultiple()
+    {
+        $this->is_multiple = true;
     }
 
     public function setAttribute(string $attribute, string $value): Field
@@ -118,13 +125,16 @@ class Field
         } elseif ($this->type === 'select') {
             $default_attributes = [
                 'id'    => $this->getId(),
-                'name'  => $this->getName(),
+                'name'  => $this->getName() . ($this->is_multiple ? '[]' : ''),
             ];
             if ($this->required === true) {
                 $default_attributes['required'] = '';
             }
             if ($this->is_disabled === true) {
                 $default_attributes['disabled'] = '';
+            }
+            if ($this->is_multiple) {
+                $default_attributes['multiple'] = '';
             }
             $attributes = array_merge($default_attributes, $this->attributes);
 
@@ -143,6 +153,41 @@ class Field
                     );
                 }, array_keys($this->options), $this->options))
             );
+        }  elseif ($this->type === 'radios' || $this->type === 'checkboxes') {
+            $type = ($this->type === 'checkboxes' ? 'checkbox' : 'radio');
+
+            return implode("\n", array_map(function ($val, $desc) use ($type) {
+                $container_attrs = ['class' => "custom-control custom-{$type}"];
+                $input_attrs = [
+                    'name'  => $this->name . ($this->type === 'checkboxes' ? '[]' : ''),
+                    'type'  => $type,
+                    'value' => $val,
+                    'class' => 'custom-control-input',
+                    'id'    => "{$this->name}-{$val}"
+                ];
+                $label_attrs = [
+                    'class' => 'custom-control-label',
+                    'for'   => "{$this->name}-{$val}"
+                ];
+                if (array_key_exists($val, $this->selected)) {
+                    $input_attrs['checked'] = 'checked';
+                }
+                if ($this->is_disabled === true) {
+                    $input_attrs['disabled'] = '';
+                }
+                foreach (['data-action', 'data-target'] as $attr) {
+                    if (array_key_exists($attr, $this->attributes)) {
+                        $input_attrs[$attr] = $this->attributes[$attr];
+                    }
+                }
+                return sprintf(
+                    "<div %s>\n<input %s>\n<label %s>%s</label></div>\n",
+                    $this->htmlify($container_attrs),
+                    $this->htmlify($input_attrs),
+                    $this->htmlify($label_attrs),
+                    $desc
+                );
+            }, array_keys($this->options), $this->options));
         } elseif ($this->type === 'textarea') {
             $default_attributes = [
                 'id'    => $this->getId(),

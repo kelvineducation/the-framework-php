@@ -74,6 +74,19 @@ class Form
         return $field;
     }
 
+    public function addRadios(string $name, array $options = [], $selected = null, string $label = '')
+    {
+        $field = new Field($name, 'radios', $label);
+        $selected = $this->request->getParam($name, $selected);
+        if (!is_array($selected)) {
+            $selected = [$selected];
+        }
+        $field->setSelected($selected);
+        $field->setOptions($options);
+        $this->addField($field);
+        return $field;
+    }
+
     public function addEmail(string $name, string $value = '', string $label)
     {
         $field = new Field($name, 'email', $label);

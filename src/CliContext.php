@@ -42,7 +42,7 @@ class CliContext extends AppContext
             exit(1);
         }
 
-        $class_name = strtr(ucwords($command_name, ':-'), [':' => '\\', '-' => '']);
+        $class_name = strtr(ucwords($command_name, ':-'), [':' => '', '-' => '']);
         $command_class = sprintf('\%s\Cli\%sCli', $this->namespace, $class_name);
         if (!class_exists($command_class)) {
             echo "Unknown command '{$class_name}'\n\n";
