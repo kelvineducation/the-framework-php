@@ -1,11 +1,11 @@
 <?php
 
-namespace The\Cli\Migrate;
+namespace The\Cli;
 
 use The\Cli\Cli;
 use The\Migration;
 
-class NewCli extends Cli
+class MigrateNewCli extends Cli
 {
     public function run(array $args)
     {

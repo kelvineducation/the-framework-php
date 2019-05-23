@@ -1,10 +1,10 @@
 <?php
 
-namespace The\Cli\Assets;
+namespace The\Cli;
 
 use The\Cli\Cli;
 
-class CompileCli extends Cli
+class AssetsCompileCli extends Cli
 {
     public function run(array $args)
     {
