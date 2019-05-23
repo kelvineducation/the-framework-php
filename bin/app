@@ -1,10 +1,12 @@
 #!/usr/bin/env php
 <?php
 
-if (file_exists(__DIR__ . '/../../../bootstrap.php')) {
+if (file_exists(__DIR__ . '/../../../../bootstrap.php')) {
+    // vendor/kelvineducation/the-framework-php/bin
+    require_once __DIR__ . '/../../../../bootstrap.php';
+} elseif (file_exists(__DIR__ . '/../../../bootstrap.php')) {
+    // composer-dev/the-framework-php/bin
     require_once __DIR__ . '/../../../bootstrap.php';
-} else {
-    require_once __DIR__ . '/../bootstrap.php';
 }
 
 \The\App::run(\The\CliContext::init('App', $argv));
