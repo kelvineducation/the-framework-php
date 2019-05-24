@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../bootstrap.php';
 
-use K\{App, ApiContext, WebContext};
+use The\{App, ApiContext, WebContext};
 
 if (strpos($_SERVER['REQUEST_URI'], '/api') === 0) {
     $context = ApiContext::init();

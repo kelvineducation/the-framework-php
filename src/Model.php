@@ -1,11 +1,11 @@
 <?php
 
-namespace K;
+namespace The;
 
 use Closure;
 
 /**
- * @package K
+ * @package The
  */
 class Model
 {

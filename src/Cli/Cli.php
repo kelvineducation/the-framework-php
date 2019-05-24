@@ -1,6 +1,6 @@
 <?php
 
-namespace K\Cli;
+namespace The\Cli;
 
 abstract class Cli
 {

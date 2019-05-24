@@ -1,8 +1,8 @@
 <?php
 
-namespace K\Tests;
+namespace The\Tests;
 
-use K\ResponseWriterInterface;
+use The\ResponseWriterInterface;
 
 class ResponseWriterStub implements ResponseWriterInterface
 {

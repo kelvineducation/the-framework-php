@@ -1,8 +1,6 @@
 <?php
 
-namespace K;
-
-use function K\{option};
+namespace The;
 
 class AppContext
 {

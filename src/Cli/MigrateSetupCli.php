@@ -1,11 +1,11 @@
 <?php
 
-namespace K\Cli\Migrate;
+namespace The\Cli;
 
-use K\Cli\Cli;
-use K\Migration;
+use The\Cli\Cli;
+use The\Migration;
 
-class SetupCli extends Cli
+class MigrateSetupCli extends Cli
 {
     public function run(array $args)
     {

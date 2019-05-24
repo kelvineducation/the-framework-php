@@ -1,9 +1,9 @@
 <?php
 
-namespace K;
+namespace The;
 
 /**
- * @package K
+ * @package The
  */
 class Db
 {

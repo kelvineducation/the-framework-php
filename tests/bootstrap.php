@@ -2,8 +2,8 @@
 
 include __DIR__ . '/../vendor/autoload.php';
 
-use function K\{option, service};
-use K\{Db, Model};
+use function The\{option, service};
+use The\{Db, Model};
 
 option('db', service(function () {
     return new Db(getenv('DATABASE_URL'));

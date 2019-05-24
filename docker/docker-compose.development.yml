@@ -28,7 +28,7 @@ services:
       context: .
       dockerfile: docker/php/Dockerfile
     restart: unless-stopped
-    command: ["/app/scripts/repeat", "/app/bin/K", "worker"]
+    command: ["/app/scripts/repeat", "/app/bin/the", "worker"]
     volumes:
       - .:/app
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini

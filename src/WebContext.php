@@ -1,6 +1,6 @@
 <?php
 
-namespace K;
+namespace The;
 
 class WebContext extends AppContext
 {
@@ -19,11 +19,11 @@ class WebContext extends AppContext
             'domain'   => '',
             'secure'   => true,
             'httponly' => true,
-            'name'     => 'K',
+            'name'     => 'The',
         ]);
     }
 
-    public function handleServerError(\K\ResponseWriterInterface $w, \Throwable $e)
+    public function handleServerError(\The\ResponseWriterInterface $w, \Throwable $e)
     {
         $honeybadger = option('honeybadger');
         $honeybadger->notify($e);
@@ -33,7 +33,7 @@ class WebContext extends AppContext
         ], SERVER_ERROR);
     }
 
-    public function handleNotFound(\K\ResponseWriterInterface $w)
+    public function handleNotFound(\The\ResponseWriterInterface $w)
     {
         html($w, 'not_found.phtml', 'error_layout.phtml', []);
     }

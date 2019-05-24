@@ -1,6 +1,6 @@
 <?php
 
-namespace K;
+namespace The;
 
 class ApiContext extends AppContext
 {
@@ -9,7 +9,7 @@ class ApiContext extends AppContext
         return new HttpContext(new ApiContext());
     }
 
-    public function handleServerError(\K\ResponseWriterInterface $w, \Throwable $e)
+    public function handleServerError(\The\ResponseWriterInterface $w, \Throwable $e)
     {
         $honeybadger = option('honeybadger');
         $honeybadger->notify($e);
@@ -24,7 +24,7 @@ class ApiContext extends AppContext
         json($w, $error, SERVER_ERROR);
     }
 
-    public function handleNotFound(\K\ResponseWriterInterface $w)
+    public function handleNotFound(\The\ResponseWriterInterface $w)
     {
         json($w, [
             'code'  => NOT_FOUND,

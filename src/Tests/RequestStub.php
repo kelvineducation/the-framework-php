@@ -1,8 +1,11 @@
 <?php
 
-namespace K\Tests;
+namespace The\Tests;
 
-class RequestStub implements \K\RequestInterface
+use The\Form\RequestInterface as FormRequestInterface;
+use The\RequestInterface;
+
+class RequestStub implements RequestInterface, FormRequestInterface
 {
     public $params = [];
     public $session_params = [];

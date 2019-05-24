@@ -1,16 +1,16 @@
 <?php
 
-use function \K\{db};
-use K\DbException;
+use function \The\{db};
+use The\DbException;
 
 test(function ($t) {
     $result = db()->query('SELECT 1');
-    $t->equals(get_class($result), 'K\DbResult', "Query returns a result object");
+    $t->equals(get_class($result), 'The\DbResult', "Query returns a result object");
 });
 
 test(function ($t) {
     $result = db()->query('SELECT $1', ['1']);
-    $t->equals(get_class($result), 'K\DbResult', "query accepts parameters");
+    $t->equals(get_class($result), 'The\DbResult', "query accepts parameters");
 });
 
 test(function ($t) {

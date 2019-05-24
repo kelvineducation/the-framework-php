@@ -1,8 +1,8 @@
 <?php
 
-namespace K\Tests;
+namespace The\Tests;
 
-class AuthStub implements \K\AuthInterface
+class AuthStub implements \The\AuthInterface
 {
     public function getAuthUrl()
     {

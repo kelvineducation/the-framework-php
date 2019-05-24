@@ -1,6 +1,6 @@
 <?php
 
-namespace K;
+namespace The;
 
 define('URL_PARAM_PREFIX', '_');
 

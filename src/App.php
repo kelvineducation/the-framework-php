@@ -1,8 +1,6 @@
 <?php
 
-namespace K;
-
-use function K\{option};
+namespace The;
 
 define('E_FATAL', E_ERROR | E_PARSE | E_CORE_ERROR
         | E_COMPILE_ERROR | E_USER_ERROR);

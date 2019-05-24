@@ -1,6 +1,8 @@
 <?php
 
-namespace K\Form;
+namespace The\Form;
+
+use Exception;
 
 class FormException extends Exception
 {
