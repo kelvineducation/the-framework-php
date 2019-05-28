@@ -2,6 +2,8 @@
 
 namespace The;
 
+use The\Db\Transaction;
+
 /**
  * @package The
  */
@@ -16,6 +18,11 @@ class Db
      * @var string
      */
     private $url;
+
+    /**
+     * @var Transaction
+     */
+    private $transaction;
 
     /**
      * @param string $url postgres://user:pass@localhost:5432/dbname?param=val
@@ -272,6 +279,27 @@ SQL;
     }
 
     /**
+     * @param string $name
+     */
+    public function begin($name)
+    {
+        $this->getTransaction()->begin($name);
+    }
+
+    /**
+     * @param string $name
+     */
+    public function accept($name)
+    {
+        $this->getTransaction()->accept($name);
+    }
+
+    public function rollbackAll()
+    {
+        $this->getTransaction()->rollbackAll();
+    }
+
+    /**
      * @return resource
      * @throws DbException
      */
@@ -303,6 +331,20 @@ SQL;
         }
 
         return $last_err;
+    }
+
+    /**
+     * @return Transaction
+     */
+    private function getTransaction()
+    {
+        if ($this->transaction) {
+            return $this->transaction;
+        }
+
+        $this->transaction = new Transaction($this);
+
+        return $this->transaction;
     }
 
     /**
