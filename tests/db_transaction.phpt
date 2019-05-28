@@ -1,6 +1,7 @@
 <?php
 
 use function \The\db;
+use The\Tests\Test;
 
 $sql = <<<SQL
 CREATE TEMPORARY TABLE t (
@@ -9,7 +10,7 @@ CREATE TEMPORARY TABLE t (
 SQL;
 db()->query($sql);
 
-test("transaction is committed if name is accepted", function (\The\Tests\Test $t) {
+test("transaction is committed if name is accepted", function (Test $t) {
     db()->query('TRUNCATE t');
 
     db()->beginTransaction('outer');
@@ -40,7 +41,7 @@ test("transaction is committed if name is accepted", function (\The\Tests\Test $
     );
 });
 
-test("transaction is not committed if name is not accepted", function (\The\Tests\Test $t) {
+test("transaction is not committed if name is not accepted", function (Test $t) {
     db()->query('TRUNCATE t');
 
     db()->beginTransaction('outer');
@@ -57,7 +58,7 @@ test("transaction is not committed if name is not accepted", function (\The\Test
     );
 });
 
-test("names must be accepted in opposite order they were started", function (\The\Tests\Test $t) {
+test("names must be accepted in opposite order they were started", function (Test $t) {
     db()->beginTransaction('outer');
     db()->beginTransaction('inner');
 
@@ -72,7 +73,7 @@ test("names must be accepted in opposite order they were started", function (\Th
     db()->rollbackAllTransactions();
 });
 
-test("names must be unique", function (\The\Tests\Test $t) {
+test("names must be unique", function (Test $t) {
     db()->beginTransaction('outer');
 
     $t->throws(
@@ -86,7 +87,7 @@ test("names must be unique", function (\The\Tests\Test $t) {
     db()->rollbackAllTransactions();
 });
 
-test("accepting an unknown transaction name is not allowed", function (\The\Tests\Test $t) {
+test("accepting an unknown transaction name is not allowed", function (Test $t) {
     $t->throws(
         function () {
             db()->acceptTransaction('outer');
@@ -96,7 +97,7 @@ test("accepting an unknown transaction name is not allowed", function (\The\Test
     );
 });
 
-test("transaction can be rolled back even if a transaction is not started", function (\The\Tests\Test $t) {
+test("transaction can be rolled back even if a transaction is not started", function (Test $t) {
     db()->rollbackAllTransactions();
     db()->rollbackAllTransactions();
     db()->rollbackAllTransactions();
