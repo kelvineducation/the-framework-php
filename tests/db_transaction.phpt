@@ -12,16 +12,16 @@ db()->query($sql);
 test("transaction is committed if name is accepted", function (\The\Tests\Test $t) {
     db()->query('TRUNCATE t');
 
-    db()->begin('outer');
-    db()->begin('first');
+    db()->beginTransaction('outer');
+    db()->beginTransaction('first');
     db()->insert('t', ['num' => 2]);
     db()->insert('t', ['num' => 6]);
-    db()->accept('first');
-    db()->begin('second');
+    db()->acceptTransaction('first');
+    db()->beginTransaction('second');
     db()->insert('t', ['num' => 7]);
-    db()->accept('second');
+    db()->acceptTransaction('second');
     db()->insert('t', ['num' => 3]);
-    db()->accept('outer');
+    db()->acceptTransaction('outer');
 
     // causing an error ensures we're not
     // selecting records from an uncommitted transaction
@@ -43,12 +43,12 @@ test("transaction is committed if name is accepted", function (\The\Tests\Test $
 test("transaction is not committed if name is not accepted", function (\The\Tests\Test $t) {
     db()->query('TRUNCATE t');
 
-    db()->begin('outer');
-    db()->begin('first');
+    db()->beginTransaction('outer');
+    db()->beginTransaction('first');
     db()->insert('t', ['num' => 9]);
     db()->insert('t', ['num' => 1]);
-    db()->accept('first');
-    db()->rollbackAll();
+    db()->acceptTransaction('first');
+    db()->rollbackAllTransactions();
 
     $t->equals(
         db()->fetchList('SELECT num, num FROM t ORDER BY num'),
@@ -58,38 +58,38 @@ test("transaction is not committed if name is not accepted", function (\The\Test
 });
 
 test("names must be accepted in opposite order they were started", function (\The\Tests\Test $t) {
-    db()->begin('outer');
-    db()->begin('inner');
+    db()->beginTransaction('outer');
+    db()->beginTransaction('inner');
 
     $t->throws(
         function () {
-            db()->accept('outer');
+            db()->acceptTransaction('outer');
         },
         '/TransactionAcceptanceOrderException/',
         'Accepting a transaction name in the wrong order causes an exception'
     );
 
-    db()->rollbackAll();
+    db()->rollbackAllTransactions();
 });
 
 test("names must be unique", function (\The\Tests\Test $t) {
-    db()->begin('outer');
+    db()->beginTransaction('outer');
 
     $t->throws(
         function () {
-            db()->begin('outer');
+            db()->beginTransaction('outer');
         },
         '/DuplicateTransactionNameException/',
         'Beginning a duplicate active transaction name causes an exception'
     );
 
-    db()->rollbackAll();
+    db()->rollbackAllTransactions();
 });
 
 test("accepting an unknown transaction name is not allowed", function (\The\Tests\Test $t) {
     $t->throws(
         function () {
-            db()->accept('outer');
+            db()->acceptTransaction('outer');
         },
         '/UnknownTransactionNameException/',
         'Accepting an unknown transaction name causes an exception'
@@ -97,9 +97,9 @@ test("accepting an unknown transaction name is not allowed", function (\The\Test
 });
 
 test("transaction can be rolled back even if a transaction is not started", function (\The\Tests\Test $t) {
-    db()->rollbackAll();
-    db()->rollbackAll();
-    db()->rollbackAll();
+    db()->rollbackAllTransactions();
+    db()->rollbackAllTransactions();
+    db()->rollbackAllTransactions();
 
     $t->pass('Rolled back transaction');
 });

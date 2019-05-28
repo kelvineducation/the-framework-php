@@ -278,23 +278,17 @@ SQL;
         return [implode(", ", $sql_fields), $params];
     }
 
-    /**
-     * @param string $name
-     */
-    public function begin($name)
+    public function beginTransaction(string $name)
     {
         $this->getTransaction()->begin($name);
     }
 
-    /**
-     * @param string $name
-     */
-    public function accept($name)
+    public function acceptTransaction(string $name)
     {
         $this->getTransaction()->accept($name);
     }
 
-    public function rollbackAll()
+    public function rollbackAllTransactions()
     {
         $this->getTransaction()->rollbackAll();
     }
