@@ -21,20 +21,12 @@ class Transaction
      */
     private $current_name = null;
 
-    /**
-     * @param Db $db
-     */
     public function __construct(Db $db)
     {
         $this->db = $db;
     }
 
-
-    /**
-     * @param string $name
-     * @throws DuplicateTransactionNameException
-     */
-    public function begin($name)
+    public function begin(string $name)
     {
         if (isset($this->names[$name])) {
             throw new DuplicateTransactionNameException($name);
@@ -48,12 +40,7 @@ class Transaction
         $this->current_name = $name;
     }
 
-    /**
-     * @param string $name
-     * @throws TransactionAcceptanceOrderException
-     * @throws UnknownTransactionNameException
-     */
-    public function accept($name)
+    public function accept(string $name)
     {
         if (!isset($this->names[$name])) {
             throw new UnknownTransactionNameException($name);
