@@ -327,10 +327,7 @@ SQL;
         return $last_err;
     }
 
-    /**
-     * @return Transaction
-     */
-    private function getTransaction()
+    private function getTransaction(): Transaction
     {
         if ($this->transaction) {
             return $this->transaction;
