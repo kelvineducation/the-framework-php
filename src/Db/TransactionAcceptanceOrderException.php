@@ -2,7 +2,9 @@
 
 namespace The\Db;
 
-class TransactionAcceptanceOrderException extends \Exception
+use Exception;
+
+class TransactionAcceptanceOrderException extends Exception
 {
     public function __construct(string $expected_name, string $actual_name)
     {

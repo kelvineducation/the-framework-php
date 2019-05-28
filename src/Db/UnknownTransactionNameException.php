@@ -2,7 +2,9 @@
 
 namespace The\Db;
 
-class UnknownTransactionNameException extends \Exception
+use Exception;
+
+class UnknownTransactionNameException extends Exception
 {
     public function __construct(string $transaction_name)
     {

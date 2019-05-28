@@ -2,7 +2,9 @@
 
 namespace The\Db;
 
-class DuplicateTransactionNameException extends \Exception
+use Exception;
+
+class DuplicateTransactionNameException extends Exception
 {
     public function __construct(string $transaction_name)
     {
