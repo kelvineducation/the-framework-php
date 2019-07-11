@@ -9,9 +9,9 @@ function esc(string $text): string
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 }
 
-function url_for(string $path, array $params = [])
+function url_for(string $page_class, array $path_params = [], array $query_string_params = []): string
 {
-    return esc($path . '?' . http_build_query($params));
+    return (new PageUrl($page_class, $path_params, $query_string_params))->toUrl();
 }
 
 /**
