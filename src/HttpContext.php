@@ -30,8 +30,8 @@ class HttpContext extends AppContext
     public function run()
     {
         try {
-            $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-            [$page_class, $vars] = page($path, 'Home', '\App\Pages\\');
+            $page_url = PageUrl::fromUrl($_SERVER['REQUEST_URI']);
+            $page_class = $page_url->getPageClass();
 
             $response = new Response();
             $request = new Request();
@@ -42,7 +42,7 @@ class HttpContext extends AppContext
             }
 
             $page = call_user_func(["$page_class", 'factory']);
-            $page->__invoke($response, $request, $vars);
+            $page->__invoke($response, $request, $page_url->getPathParams());
             $response->send();
         } catch (Throwable $e) {
             $this->defaultErrorHandler($e);
