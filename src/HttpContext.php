@@ -30,17 +30,19 @@ class HttpContext extends AppContext
     public function run()
     {
         try {
-            $page_url = PageUrl::fromUrl($_SERVER['REQUEST_URI']);
+            $request = new Request();
+
+            $page_url = PageUrl::fromUrl($request->getUri());
             $page_class = $page_url->getPageClass();
 
-            $response = new Response();
-            $request = new Request();
             if (!class_exists($page_class)) {
+                $response = new Response();
                 $this->handleNotFound($response);
                 $response->send();
                 return;
             }
 
+            $response = new Response();
             $page = call_user_func(["$page_class", 'factory']);
             $page->__invoke($response, $request, $page_url->getPathParams());
             $response->send();
