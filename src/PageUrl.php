@@ -7,6 +7,7 @@ class PageUrl
     private $page_class;
     private $path_params;
     private $query_string_params;
+    private $hash;
 
     public static function fromUrl(string $url): self
     {
@@ -31,11 +32,16 @@ class PageUrl
         return new self($page_class, $path_params);
     }
 
-    public function __construct(string $page_class, array $path_params = [], array $query_string_params = [])
-    {
+    public function __construct(
+        string $page_class,
+        array $path_params = [],
+        array $query_string_params = [],
+        string $hash = ''
+    ) {
         $this->page_class = $page_class;
         $this->path_params = $path_params;
         $this->query_string_params = $query_string_params;
+        $this->hash = $hash;
     }
 
     public function getPageClass(): string
@@ -62,6 +68,10 @@ class PageUrl
         $url = $path;
         if ($this->query_string_params) {
             $url .= '?' . http_build_query($this->query_string_params);
+        }
+
+        if ($this->hash) {
+            $url .= "#{$this->hash}";
         }
 
         return $url;

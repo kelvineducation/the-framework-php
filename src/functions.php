@@ -9,9 +9,13 @@ function esc(string $text): string
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 }
 
-function url_for(string $page_class, array $path_params = [], array $query_string_params = []): string
-{
-    return (new PageUrl($page_class, $path_params, $query_string_params))->toUrl();
+function url_for(
+    string $page_class,
+    array $path_params = [],
+    array $query_string_params = [],
+    string $hash = ''
+): string {
+    return (new PageUrl($page_class, $path_params, $query_string_params, $hash))->__toString();
 }
 
 /**
@@ -211,56 +215,6 @@ class NamedCallable
 
 class Service extends NamedCallable { }
 class Factory extends NamedCallable { }
-
-
-function page(
-    string $path,
-    string $default,
-    string $namespace = '',
-    string $suffix = 'Page'
-): array
-{
-    $params = [];
-    $page_from_path = array_reduce(explode('/', $path), function ($page, $path) use (&$params) {
-        if (is_numeric($path)) {
-            $params[] = $path;
-            return $page;
-        }
-        if (strpos($path, URL_PARAM_PREFIX) === 0) {
-            $params[] = substr($path, 1);
-            return $page;
-        }
-        return $page . str_replace(' ', '', ucwords(str_replace('_', ' ', $path)));
-    }, '');
-
-    if ($page_from_path === '') {
-        $page_from_path = $default;
-    }
-    $page = $namespace . $page_from_path . $suffix;
-
-    return [$page, $params];
-}
-
-
-function path(string $class, array $params = [], string $default = 'HomePage', string $suffix = 'Page'): string
-{
-    if ($namespace = strrchr($class, '\\')) {
-        $class = substr($namespace, 1); // Remove namespace
-    }
-    if ($class === $default) {
-        $path = '/';
-    } else {
-        $class = substr($class, 0, strrpos($class, $suffix)); // Remove suffix
-        $path = strtolower(preg_replace('/[A-Z]/', '/\\0', $class));
-    }
-
-    return array_reduce($params, function ($path, $param) {
-        if (is_numeric($param)) {
-            return $path . '/' . $param;
-        }
-        return $path . '/' . URL_PARAM_PREFIX . $param;
-    }, $path);
-}
 
 function asset_url(string $asset_url)
 {
