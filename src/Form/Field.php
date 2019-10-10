@@ -36,7 +36,7 @@ class Field
         return $this->attributes['id'] ?? $this->getName();
     }
 
-    public function setValue(string $value)
+    public function setValue($value)
     {
         $this->value = $value;
     }
@@ -99,7 +99,19 @@ class Field
 
     public function toHtml(): string
     {
-        if ($this->type === 'text' || $this->type === 'email'
+        if ($this->type === 'hidden' && is_array($this->value)) {
+            $default_attributes = [
+                'type'  => $this->type,
+                'name'  => $this->getName() . '[]',
+            ];
+
+            return implode("\n", array_map(function ($value) use ($default_attributes) {
+                $default_attributes['value'] = $value;
+                $attributes = array_merge($default_attributes, $this->attributes);
+
+                return sprintf("<input %s>", $this->htmlify($attributes));
+            }, $this->value));
+        } elseif ($this->type === 'text' || $this->type === 'email'
             || $this->type === 'submit' || $this->type === 'hidden'
             || $this->type === 'date' || $this->type === 'number'
             || $this->type === 'checkbox'

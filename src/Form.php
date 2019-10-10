@@ -105,7 +105,7 @@ class Form
         return $field;
     }
 
-    public function addHidden(string $name, string $value)
+    public function addHidden(string $name, $value)
     {
         $field = new Field($name, 'hidden');
         $field->setValue($value);
