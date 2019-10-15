@@ -278,6 +278,15 @@ SQL;
         return [implode(", ", $sql_fields), $params];
     }
 
+    /**
+     * @param int[] $ints
+     * @return string
+     */
+    public function implodeInts(array $ints)
+    {
+        return implode(', ', array_map('intval', $ints));
+    }
+
     public function beginTransaction(string $name)
     {
         $this->getTransaction()->begin($name);

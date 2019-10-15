@@ -31,3 +31,9 @@ test("quoting sql values", function ($t) {
     $t->equals(db()->quote(['a', 'b']), "ARRAY['a', 'b']", "converts array");
     $t->equals(db()->quote(new The\DbExpr('now()')), "now()", "ignores expressions");
 });
+
+test("imploding integers", function ($t) {
+    $t->equals(db()->implodeInts([1,8,2,3]), '1, 8, 2, 3', 'implodes integers');
+    $t->equals(db()->implodeInts(['1','8','2']), '1, 8, 2', 'implodes string integers');
+    $t->equals(db()->implodeInts(['php','yo','3','7']), '0, 0, 3, 7', 'casts to integers');
+});
