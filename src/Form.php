@@ -87,6 +87,19 @@ class Form
         return $field;
     }
 
+    public function addCheckboxes(string $name, array $options = [], $selected = null, string $label = '')
+    {
+        $field = new Field($name, 'checkboxes', $label);
+        $selected = $this->request->getParam($name, $selected);
+        if (!is_array($selected)) {
+            $selected = [$selected];
+        }
+        $field->setSelected($selected);
+        $field->setOptions($options);
+        $this->addField($field);
+        return $field;
+    }
+
     public function addEmail(string $name, string $value = '', string $label)
     {
         $field = new Field($name, 'email', $label);
