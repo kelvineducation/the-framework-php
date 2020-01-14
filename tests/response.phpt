@@ -28,3 +28,32 @@ Content-Type: application/json
 OUTPUT;
     $t->equals($output, $expected);
 });
+
+test("output response csv", function ($t) {
+
+    $test_output_methods = [
+        'code' => function ($status_code) {
+        },
+        'header' => function ($header) {
+        },
+        'body' => function ($body) {
+            echo $body;
+        },
+    ];
+
+    $response = new \The\Response();
+    $response->writeCsv(['a', 'apple bear']);
+    $response->writeCsv(['b', 'blue cats"']);
+    $response->writeCsv(['c', 'cool bro'], ';', '~');
+    ob_start();
+    $response->output($test_output_methods);
+    $output = ob_get_clean();
+
+    $expected = <<<OUTPUT
+    a,"apple bear"
+    b,"blue cats"""
+    c;~cool bro~
+
+    OUTPUT;
+    $t->equals($output, $expected);
+});
