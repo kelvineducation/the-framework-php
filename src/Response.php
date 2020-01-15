@@ -55,6 +55,11 @@ class Response implements ResponseWriterInterface
         return $this->getBodyStream()->write($data);
     }
 
+    public function writeCsv(array $data, ...$params): int
+    {
+        return $this->getBodyStream()->writeCsv($data, ...$params);
+    }
+
     /**
      * @param string $key
      * @param string $value

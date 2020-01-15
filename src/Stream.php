@@ -28,6 +28,16 @@ class Stream implements WriterInterface
         return $bytes;
     }
 
+    public function writeCsv(array $data, ...$params)
+    {
+        $bytes = fputcsv($this->getStream(), $data, ...$params);
+        if ($bytes === false) {
+            throw new RuntimeException('Could not write to stream');
+        }
+        $this->size += $bytes;
+        return $bytes;
+    }
+
     public function getSize(): int
     {
         return $this->size;

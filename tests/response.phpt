@@ -28,3 +28,26 @@ Content-Type: application/json
 OUTPUT;
     $t->equals($output, $expected);
 });
+
+test("output response csv", function ($t) {
+
+    $response = new \The\Response();
+    $response->writeCsv(['a', 'apple bear']);
+    $response->writeCsv(['b', 'blue cats"']);
+    $response->writeCsv(['c', 'cool bro'], ';', '~');
+
+    $body_output = '';
+    $response->output([
+        'body' => function ($body) use (&$body_output) {
+            $body_output = $body;
+        },
+    ]);
+
+    $expected = <<<OUTPUT
+    a,"apple bear"
+    b,"blue cats"""
+    c;~cool bro~
+
+    OUTPUT;
+    $t->equals($body_output, $expected);
+});
