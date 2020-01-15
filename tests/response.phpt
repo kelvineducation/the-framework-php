@@ -31,23 +31,17 @@ OUTPUT;
 
 test("output response csv", function ($t) {
 
-    $test_output_methods = [
-        'code' => function ($status_code) {
-        },
-        'header' => function ($header) {
-        },
-        'body' => function ($body) {
-            echo $body;
-        },
-    ];
-
     $response = new \The\Response();
     $response->writeCsv(['a', 'apple bear']);
     $response->writeCsv(['b', 'blue cats"']);
     $response->writeCsv(['c', 'cool bro'], ';', '~');
-    ob_start();
-    $response->output($test_output_methods);
-    $output = ob_get_clean();
+
+    $body_output = '';
+    $response->output([
+        'body' => function ($body) use (&$body_output) {
+            $body_output = $body;
+        },
+    ]);
 
     $expected = <<<OUTPUT
     a,"apple bear"
@@ -55,5 +49,5 @@ test("output response csv", function ($t) {
     c;~cool bro~
 
     OUTPUT;
-    $t->equals($output, $expected);
+    $t->equals($body_output, $expected);
 });
