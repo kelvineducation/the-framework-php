@@ -27,4 +27,14 @@ class ResponseWriterStub implements ResponseWriterInterface
     {
         $this->session[$key] = $value;
     }
+
+    public function isRedirect(): bool
+    {
+        return $this->status === 302;
+    }
+
+    public function hasBody(): bool
+    {
+        return $this->data !== '';
+    }
 }
