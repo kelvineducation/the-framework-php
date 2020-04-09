@@ -222,7 +222,7 @@ SQL;
             return ($val ? 'TRUE' : 'FALSE');
         }
 
-        if (is_int($val)) {
+        if (is_numeric($val)) {
             return "{$val}";
         }
 
