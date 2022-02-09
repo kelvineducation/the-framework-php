@@ -31,20 +31,28 @@ class HttpContext extends AppContext
     {
         try {
             $request = new Request();
+            option('instrumentor')->startHttpRequest($request);
 
             $page_url = PageUrl::fromUrl($request->getUri());
             $page_class = $page_url->getPageClass();
 
             if (!class_exists($page_class)) {
                 $response = new Response();
+
                 $this->handleNotFound($response);
+                option('instrumentor')->endHttpRequest($response);
+
                 $response->send();
+
                 return;
             }
 
             $response = new Response();
             $page = call_user_func(["$page_class", 'factory']);
             $page->__invoke($response, $request, $page_url->getPathParams());
+
+            option('instrumentor')->endHttpRequest($response);
+
             $response->send();
         } catch (Throwable $e) {
             $this->defaultErrorHandler($e);
@@ -57,6 +65,8 @@ class HttpContext extends AppContext
         $w->withStatus(500);
 
         $this->handleServerError($w, $e);
+        option('instrumentor')->endHttpRequest($w);
+
         $w->send();
     }
 
