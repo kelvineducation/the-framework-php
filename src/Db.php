@@ -374,8 +374,8 @@ SQL;
         return $conn_str;
     }
 
-    public function escapeLiteral(string $str): string
+    public function escapeLiteral(?string $str): string
     {
-        return pg_escape_literal($this->getConn(), $str);
+        return pg_escape_literal($this->getConn(), $str ?? '');
     }
 }
