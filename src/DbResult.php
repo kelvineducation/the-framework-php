@@ -27,7 +27,7 @@ class DbResult
     {
         $row = pg_fetch_row($this->pg_result);
 
-        return $row[0];
+        return $row[0] ?? null;
     }
 
     public function fetchList(): array

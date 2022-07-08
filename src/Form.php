@@ -100,7 +100,7 @@ class Form
         return $field;
     }
 
-    public function addEmail(string $name, string $value = '', string $label)
+    public function addEmail(string $name, string $value, string $label)
     {
         $field = new Field($name, 'email', $label);
         $field->setAttribute('class', 'form-control');

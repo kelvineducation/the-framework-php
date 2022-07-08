@@ -62,7 +62,7 @@ class PageUrl
         }
 
         foreach ($this->path_params as $param => $value) {
-            $path .= sprintf('/%s/%s', urlencode($param), urlencode($value));
+            $path .= sprintf('/%s/%s', urlencode($param ?? ''), urlencode($value ?? ''));
         }
 
         $url = $path;
