@@ -24,8 +24,8 @@ class PageUrl
 
         $path_params = [];
         while (count($path_pieces)) {
-            $param = urldecode(array_shift($path_pieces));
-            $param_value = urldecode(array_shift($path_pieces));
+            $param = urldecode(array_shift($path_pieces) ?? '');
+            $param_value = urldecode(array_shift($path_pieces) ?? '');
             $path_params[$param] = $param_value;
         }
 
