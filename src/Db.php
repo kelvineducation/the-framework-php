@@ -361,7 +361,7 @@ SQL;
         $password = parse_url($url, PHP_URL_PASS);
 
         // get additional options like application_name
-        parse_str(parse_url($url, PHP_URL_QUERY), $options);
+        parse_str(parse_url($url, PHP_URL_QUERY) ?? '', $options);
         $options_str = implode(' ', array_map(function ($arg, $val) {
             return "--{$arg}={$val}";
         }, array_keys($options), $options));
@@ -372,5 +372,10 @@ SQL;
             . " options='{$options_str}'";
 
         return $conn_str;
+    }
+
+    public function escapeLiteral(?string $str): string
+    {
+        return pg_escape_literal($this->getConn(), $str ?? '');
     }
 }

@@ -21,7 +21,7 @@
     },
     "bin": ["bin/the", "bin/app"],
     "require": {
-        "php": "~7.3.0",
+        "php": "^7.3 || ^8.0",
         "ext-json": "*",
         "ext-pgsql": "*",
         "ext-redis": "*"

@@ -20,7 +20,7 @@ class ErrorHandler
 
     public function handleError($type, $message, $file, $line)
     {
-        if (error_reporting() === 0) {
+        if (!(error_reporting() & $type)) {
             return;
         }
 
