@@ -11,6 +11,11 @@ class DbResult
         $this->pg_result = $pg_result;
     }
 
+    public function getAffectedRows(): int
+    {
+        return pg_affected_rows($this->pg_result);
+    }
+
     public function getNumRows(): int
     {
         return pg_num_rows($this->pg_result);
