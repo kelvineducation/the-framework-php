@@ -1,4 +1,4 @@
-FROM php:7.3-fpm-alpine
+FROM php:8.1.8-fpm-alpine
 
 # git is for composer
 # bcmath is for phpunit
