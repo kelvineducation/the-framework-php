@@ -60,7 +60,7 @@ class Form
         return $field;
     }
 
-    public function addSelect(string $name, array $options = [], array $selected = [], string $label = '')
+    public function addSelect(string $name, array $options = [], array $selected = [], string $label = '', bool $use_opt_group = false, string $default_option = '')
     {
         $field = new Field($name, 'select', $label);
         $field->setAttribute('class', 'form-control');
@@ -70,6 +70,10 @@ class Form
         }
         $field->setSelected($selected);
         $field->setOptions($options);
+        $field->setDefaultOption($default_option);
+        if ($use_opt_group) {
+            $field->setOptGroups();
+        }
         $this->addField($field);
         return $field;
     }
