@@ -90,11 +90,14 @@ class HttpContext extends AppContext
             setcookie(
                 $session['name'],
                 $_COOKIE[$session['name']],
-                time() + $session['lifetime'],
-                $session['path'],
-                $session['domain'],
-                $session['secure'],
-                $session['httponly']
+                [
+                    'expires'  => time() + $session['lifetime'],
+                    'path'     => $session['path'],
+                    'domain'   => $session['domain'],
+                    'secure'   => $session['secure'],
+                    'httponly' => $session['httponly'],
+                    'samesite' => $session['samesite'],
+                ]
             );
         }
         session_start([
@@ -106,6 +109,7 @@ class HttpContext extends AppContext
             'cookie_httponly' => $session['httponly'],
             'cache_limiter'   => '',
             'gc_maxlifetime'  => $session['lifetime'] * 3,
+            'cookie_samesite' => $session['samesite'],
         ]);
     }
 }
