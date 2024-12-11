@@ -154,7 +154,26 @@ class Field
                 "<select %s>\n%s\n</select>",
                 $this->htmlify($attributes),
                 implode("\n", array_map(function ($val, $desc) {
+                    $attrs = ['label' => $val];
+                    if (is_array($desc)) {
+                        return sprintf(
+                            "<optgroup %s>\n%s\n</optgroup>\n",
+                            $this->htmlify($attrs),
+                            implode("\n", array_map(function ($val, $desc) {
+                                $attrs = ['value' => $val];
+                                if (array_key_exists($val, $this->selected)) {
+                                    $attrs['selected'] = 'selected';
+                                }
+                                return sprintf(
+                                    "<option %s>%s</option>",
+                                    $this->htmlify($attrs),
+                                    $desc
+                                );
+                            }, array_keys($desc), $desc))
+                        );
+                    } else {
                     $attrs = ['value' => $val];
+
                     if (array_key_exists($val, $this->selected)) {
                         $attrs['selected'] = 'selected';
                     }
@@ -163,6 +182,7 @@ class Field
                         $this->htmlify($attrs),
                         $desc
                     );
+                    }
                 }, array_keys($this->options), $this->options))
             );
         }  elseif ($this->type === 'radios' || $this->type === 'checkboxes') {

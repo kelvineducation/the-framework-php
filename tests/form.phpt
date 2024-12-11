@@ -71,6 +71,7 @@ test("form select html with selected options", function (Test $t) {
     <option value="cheese">Cheese</option>
 
     <option value="pepperoni" selected="selected">Pepperoni</option>
+
     <optgroup label="Sausages">
     <option value="sausage1">Sausage 1</option>
     <option value="sausage2">Sausage 2</option>
