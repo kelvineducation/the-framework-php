@@ -6,20 +6,20 @@ export GID=$(shell id -g)
 install: build-compose-file ${INSTALL_TARGET}
 
 install-docker:
-	docker-compose build
-	docker-compose up -d
-	docker-compose exec php-fpm composer install
+	docker compose build
+	docker compose up -d
+	docker compose exec php-fpm composer install
 
 install-buoy: install-dev
 
 install-dev: install-docker
 
 tests:
-	docker-compose exec php-fpm ./bin/tests
+	docker compose exec php-fpm ./bin/tests
 
 php-cli:
-	docker-compose exec php-fpm /bin/sh
+	docker compose exec php-fpm /bin/sh
 
 build-compose-file:
 	rm -f docker-stack.yml docker-compose.yml
-	docker-compose -f docker-utils.yml run --rm yaml-merge
+	docker compose -f docker-utils.yml run --rm yaml-merge
