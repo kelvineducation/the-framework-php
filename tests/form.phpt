@@ -9,25 +9,25 @@ test("form addField does not allow duplicate field names", function (Test $t) {
     $form = new Form($request, 'testing', '');
     $form->addText('testing');
 
-    $t->throws(function() use ($form) {
+    $t->throws(function () use ($form) {
         $form->addText('testing');
     }, '/FormException/');
 });
 
 test("form select html", function (Test $t) {
-  $field = new Field('pizza', 'select', 'Pizza');
-  $html = <<<'HTML'
+    $field = new Field('pizza', 'select', 'Pizza');
+    $html = <<<'HTML'
     <select id="pizza" name="pizza">
 
     </select>
     HTML;
-  $t->equals($field->toHtml(), $html);
+    $t->equals($field->toHtml(), $html);
 });
 
 test("form select html with options", function (Test $t) {
-  $field = new Field('pizza', 'select', 'Pizza');
-  $field->setOptions(['cheese' => 'Cheese', 'pepperoni' => 'Pepperoni']);
-  $html = <<<'HTML'
+    $field = new Field('pizza', 'select', 'Pizza');
+    $field->setOptions(['cheese' => 'Cheese', 'pepperoni' => 'Pepperoni']);
+    $html = <<<'HTML'
     <select id="pizza" name="pizza">
     <option value="cheese">Cheese</option>
 
@@ -35,14 +35,14 @@ test("form select html with options", function (Test $t) {
 
     </select>
     HTML;
-  $t->equals($field->toHtml(), $html);
+    $t->equals($field->toHtml(), $html);
 });
 
 test("form select html with selected options", function (Test $t) {
-  $field = new Field('pizza', 'select', 'Pizza');
-  $field->setOptions(['cheese' => 'Cheese', 'pepperoni' => 'Pepperoni']);
-  $field->setSelected(['pepperoni']);
-  $html = <<<'HTML'
+    $field = new Field('pizza', 'select', 'Pizza');
+    $field->setOptions(['cheese' => 'Cheese', 'pepperoni' => 'Pepperoni']);
+    $field->setSelected(['pepperoni']);
+    $html = <<<'HTML'
     <select id="pizza" name="pizza">
     <option value="cheese">Cheese</option>
 
@@ -50,23 +50,22 @@ test("form select html with selected options", function (Test $t) {
 
     </select>
     HTML;
-  $t->equals($field->toHtml(), $html);
+    $t->equals($field->toHtml(), $html);
 });
 
-//create test that tests for opt groups
 test("form select html with selected options", function (Test $t) {
-  $field = new Field('pizza', 'select', 'Pizza');
-  $field->setOptions([
-    'cheese' => 'Cheese',
-    'pepperoni' => 'Pepperoni',
-    'Sausages' => [
-      'sausage1' => 'Sausage 1',
-      'sausage2' => 'Sausage 2'
-    ],
-  ]);
-  $field->setSelected(['pepperoni']);
+    $field = new Field('pizza', 'select', 'Pizza');
+    $field->setOptions([
+      'cheese' => 'Cheese',
+      'pepperoni' => 'Pepperoni',
+      'Sausages' => [
+        'sausage1' => 'Sausage 1',
+        'sausage2' => 'Sausage 2'
+      ],
+    ]);
+    $field->setSelected(['pepperoni']);
 
-  $html = <<<'HTML'
+    $html = <<<'HTML'
     <select id="pizza" name="pizza">
     <option value="cheese">Cheese</option>
 
@@ -81,5 +80,5 @@ test("form select html with selected options", function (Test $t) {
 
     </select>
     HTML;
-  $t->equals($field->toHtml(), $html);
+    $t->equals($field->toHtml(), $html);
 });
