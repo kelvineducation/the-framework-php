@@ -2,6 +2,7 @@
 
 namespace The;
 
+use App\Libs\Debug;
 use DirectoryIterator;
 
 class AssetBuster
@@ -84,11 +85,28 @@ class AssetBuster
         }
     }
 
-    private function syncAsset(string $dirname, \SplFileInfo $file)
+    private function syncAsset(string $dirname, DirectoryIterator $file, int $recursion_level = 0)
     {
         // Note: This doesn't work with nested asset directories which is okay
         // because we don't need that complication right now
+
+        Debug::echo(sprintf('%s/%s', $dirname, $file->getFilename()));
+
+        $stats = ["unlinked" => 0, "linked" => 0, "skipped" => 0];
+
+        // update method to support nested asset directories
+        if ($file->isDir() && !$file->isDot()) {
+            Debug::echo('recursing');
+            $sub_dirname = sprintf('%s/%s', $dirname, $file->getFilename());
+            $nested_files = new DirectoryIterator($file->getPathname());
+            foreach ($nested_files as $nested_file) {
+                $this->syncAsset($sub_dirname, $nested_file, $recursion_level + 1);
+            }
+            return;
+        }
+
         if (!$file->isFile() || $file->getFilename() === '.keep') {
+            Debug::echo('skipping');
             return;
         }
 
@@ -96,6 +114,7 @@ class AssetBuster
         $url = '/' . $dirname . '/' . $file->getFilename();
 
         if (!$this->assetHasChanged($url, $file)) {
+            Debug::echo('skipping unchanged');
             return;
         }
 
@@ -107,13 +126,13 @@ class AssetBuster
                 "Could not make sha for %s", $file->getPathname()
             ));
         }
-        $link_filename = $sha . '_' . $file->getFilename();
+        $link_filename = sprintf('%s_%s', $sha, $file->getFilename());
         if ($file->getExtension() === 'map') {
             $link_filename = $file->getFilename();
         }
         $link_url = '/asset_links/' . $dirname . '/' . $link_filename;
-        $link_pathname = $this->public_path . '/' . $link_url;
-        $relative_target_pathname = '../../' . $dirname . '/' . $file->getFilename();
+        $link_pathname = $this->public_path . $link_url;
+        $relative_target_pathname = '../../' . str_repeat('../', $recursion_level) . $dirname . '/' . $file->getFilename();
 
         $this->assets[$url] = [
             'sha'   => $sha,
@@ -121,15 +140,18 @@ class AssetBuster
         ];
 
         if (file_exists($link_pathname)) {
+            Debug::echo(sprintf('skipping existing symlink %s', $link_pathname));
             return;
         }
 
+        Debug::echo(sprintf('linking %s -> %s', $link_pathname, $relative_target_pathname));
         $symlink = @symlink($relative_target_pathname, $link_pathname);
+
         if (!$symlink) {
             throw new \Exception(sprintf(
                 "Could not create asset symlink %s -> %s",
-                $relative_target_pathname,
-                $link_pathname
+                $link_pathname,
+                $relative_target_pathname
             ));
         }
     }
@@ -146,10 +168,10 @@ class AssetBuster
         return true;
     }
 
-    private function removeOldSymlink(string $url)
+    private function removeOldSymlink(string $url): bool
     {
         if (!isset($this->assets[$url])) {
-            return;
+            return false;
         }
 
         $old_symlink_path = $this->public_path . '/' . $this->assets[$url]['url'];
@@ -160,5 +182,6 @@ class AssetBuster
                 $old_symlink_path
             ));
         }
+        return true;
     }
 }
