@@ -118,8 +118,6 @@ class AssetBuster
             return;
         }
 
-        $this->removeOldSymlink($url);
-
         $sha = sha1_file($file->getPathname());
         if ($sha === false) {
             throw new \Exception(sprintf(
@@ -134,15 +132,12 @@ class AssetBuster
         $link_pathname = $this->public_path . $link_url;
         $relative_target_pathname = '../../' . str_repeat('../', $recursion_level) . $dirname . '/' . $file->getFilename();
 
+        @unlink($link_pathname);
+
         $this->assets[$url] = [
             'sha'   => $sha,
             'url'   => $link_url,
         ];
-
-        if (file_exists($link_pathname)) {
-            Debug::echo(sprintf('skipping existing symlink %s', $link_pathname));
-            return;
-        }
 
         Debug::echo(sprintf('linking %s -> %s', $link_pathname, $relative_target_pathname));
         $symlink = @symlink($relative_target_pathname, $link_pathname);
@@ -165,23 +160,6 @@ class AssetBuster
             return false;
         }
 
-        return true;
-    }
-
-    private function removeOldSymlink(string $url): bool
-    {
-        if (!isset($this->assets[$url])) {
-            return false;
-        }
-
-        $old_symlink_path = $this->public_path . '/' . $this->assets[$url]['url'];
-        $remove_old_symlink = unlink($old_symlink_path);
-        if ($remove_old_symlink === false) {
-            throw new \Exception(sprintf(
-                "Could not remove old symlink **%s**",
-                $old_symlink_path
-            ));
-        }
         return true;
     }
 }
