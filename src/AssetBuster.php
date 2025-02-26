@@ -92,8 +92,6 @@ class AssetBuster
 
         Debug::echo(sprintf('%s/%s', $dirname, $file->getFilename()));
 
-        $stats = ["unlinked" => 0, "linked" => 0, "skipped" => 0];
-
         // update method to support nested asset directories
         if ($file->isDir() && !$file->isDot()) {
             Debug::echo('recursing');
