@@ -222,10 +222,6 @@ SQL;
             return ($val ? 'TRUE' : 'FALSE');
         }
 
-        if (is_numeric($val)) {
-            return "{$val}";
-        }
-
         if (is_object($val) && get_class($val) === DbExpr::class) {
             return "{$val}";
         }
