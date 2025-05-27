@@ -18,6 +18,8 @@ class Field
     private $help_text = '';
 
     private $is_multiple = false;
+    private $has_opt_groups = false;
+    private $default_option = '';
 
     public function __construct(string $name, string $type, string $label = '')
     {
@@ -59,6 +61,16 @@ class Field
     public function setMultiple()
     {
         $this->is_multiple = true;
+    }
+
+    public function setOptGroups()
+    {
+        $this->has_opt_groups = true;
+    }
+
+    public function setDefaultOption(string $default_option)
+    {
+        $this->default_option = $default_option;
     }
 
     public function setAttribute(string $attribute, string $value): Field
@@ -149,20 +161,43 @@ class Field
                 $default_attributes['multiple'] = '';
             }
             $attributes = array_merge($default_attributes, $this->attributes);
+            $default_option = '';
+            if ($this->default_option) {
+                $default_option = sprintf('<option selected=\"selected\" \"disabled=\"disabled\" value=0>%s</option>', $this->default_option);
+            }
 
             return sprintf(
-                "<select %s>\n%s\n</select>",
+                "<select %s>\n%s%s\n</select>",
                 $this->htmlify($attributes),
+                $default_option,
                 implode("\n", array_map(function ($val, $desc) {
-                    $attrs = ['value' => $val];
-                    if (array_key_exists($val, $this->selected)) {
-                        $attrs['selected'] = 'selected';
+                    if ($this->has_opt_groups) {
+                        $opt_attrs = ['label' => $val];
+                        $options = '';
+                        foreach ($desc as $v => $d) {
+                            $attrs = ['value' => $v];
+                            $options .= sprintf(
+                                "<option %s>%s</option>\n",
+                                $this->htmlify($attrs),
+                                $d
+                            );
+                        }
+                        return sprintf(
+                            "<optgroup %s>%s</optgroup>\n",
+                            $this->htmlify($opt_attrs),
+                            $options
+                        );
+                    } else {
+                        $attrs = ['value' => $val];
+                        if (array_key_exists($val, $this->selected)) {
+                            $attrs['selected'] = 'selected';
+                        }
+                        return sprintf(
+                            "<option %s>%s</option>\n",
+                            $this->htmlify($attrs),
+                            $desc
+                        );
                     }
-                    return sprintf(
-                        "<option %s>%s</option>\n",
-                        $this->htmlify($attrs),
-                        $desc
-                    );
                 }, array_keys($this->options), $this->options))
             );
         }  elseif ($this->type === 'radios' || $this->type === 'checkboxes') {
