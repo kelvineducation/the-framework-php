@@ -135,6 +135,18 @@ class Field
 
             return sprintf("<input %s>", $this->htmlify($attributes));
         } elseif ($this->type === 'select') {
+            $createOptionHtml = function ($value, $label) {
+                $attrs = ['value' => $value];
+                if (array_key_exists($value, $this->selected)) {
+                    $attrs['selected'] = 'selected';
+                }
+                return sprintf(
+                    "<option %s>%s</option>\n",
+                    $this->htmlify($attrs),
+                    $label
+                );
+            };
+
             $default_attributes = [
                 'id'    => $this->getId(),
                 'name'  => $this->getName() . ($this->is_multiple ? '[]' : ''),
@@ -153,16 +165,17 @@ class Field
             return sprintf(
                 "<select %s>\n%s\n</select>",
                 $this->htmlify($attributes),
-                implode("\n", array_map(function ($val, $desc) {
-                    $attrs = ['value' => $val];
-                    if (array_key_exists($val, $this->selected)) {
-                        $attrs['selected'] = 'selected';
+                implode("\n", array_map(function ($key, $val) use ($createOptionHtml) {
+                    if (is_array($val)) {
+                        $options = $val;
+                        return sprintf(
+                            "<optgroup %s>\n%s\n</optgroup>\n",
+                            $this->htmlify(['label' => $key]),
+                            implode("\n", array_map($createOptionHtml, array_keys($options), $options))
+                        );
+                    } else {
+                        return $createOptionHtml($key, $val);
                     }
-                    return sprintf(
-                        "<option %s>%s</option>\n",
-                        $this->htmlify($attrs),
-                        $desc
-                    );
                 }, array_keys($this->options), $this->options))
             );
         }  elseif ($this->type === 'radios' || $this->type === 'checkboxes') {
